@@ -2,12 +2,14 @@ import {LoginForm} from "../../components";
 import {useEffect} from "react";
 import {useRouter} from "next/router";
 import { supabase } from "../../utils/supabase";
+import { useUser } from "../../context/UserProvider";
 
 export default function Login() {
   const router = useRouter();
+  const user = useUser();
 
   useEffect(() => {
-    if (supabase.auth.user()) {
+    if (user) {
       router.push('/app/')
     }
   }, []);

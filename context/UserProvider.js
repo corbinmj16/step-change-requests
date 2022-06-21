@@ -5,16 +5,27 @@ import {supabase} from "../utils/supabase";
 const UserContext = createContext();
 
 export function UserProvider({children}) {
-  const [user, setUser] = useState(supabase.auth.session());
+  const router = useRouter();
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // when auth changes set the user to the session
+    if (supabase.auth.user()) {
+      setUser(supabase.auth.user());
+    } else {
+      router.push('/app/login')
+    }
+    
     supabase.auth.onAuthStateChange((event, session) => {
-      console.log('auth changed: ', session);
+      if (session === null) {
+        router.push('/app/login');
+        setUser(session);
+        return;
+      }
+
       // if logged out -> session=null, if logged in -> session = user object
-      setUser(session);
+      setUser(session.user);      
     });
-  }, [user]);
+  }, []);
 
   return (
     <UserContext.Provider value={user}>
@@ -23,6 +34,6 @@ export function UserProvider({children}) {
   )
 }
 
-export function useUserContext() {
+export function useUser() {
   return useContext(UserContext);
 }

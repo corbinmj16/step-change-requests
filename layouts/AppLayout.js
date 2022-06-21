@@ -1,26 +1,8 @@
-import {useRouter} from 'next/router';
-import {useEffect, useState} from 'react';
 import {Menu} from "../components";
-import {supabase} from "../utils/supabase";
+import { useUser } from "../context/UserProvider";
 
-export function AppLayout({children}) {
-  const router = useRouter();
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    if (supabase.auth.user()) {
-      setUser(supabase.auth.user());
-    } else {
-      router.push('/app/login')
-    }
-    
-    supabase.auth.onAuthStateChange((event, session) => {
-      console.log('auth changed: ', session);
-      if (session === null) router.push('/app/login');
-      // if logged out -> session=null, if logged in -> session = user object
-      setUser(session);
-    });
-  }, []);
+export function AppLayout({ children }) {
+  const user = useUser();
 
   const Loading = () => {
     return (

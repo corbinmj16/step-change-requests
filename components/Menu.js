@@ -2,14 +2,11 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import {supabase} from "../utils/supabase";
 import {useRouter} from "next/router";
+import { useUser } from "../context/UserProvider";
 
 export function Menu() {
   const router = useRouter();
-  const [user, setUser] = useState('Hello');
-
-  useEffect(() => {
-    setUser(supabase.auth.user());
-  }, []);
+  const user = useUser();
 
   const handleLogout = async () => {
     let {error} = await supabase.auth.signOut();
