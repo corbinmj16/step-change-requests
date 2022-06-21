@@ -1,9 +1,15 @@
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import {supabase} from "../utils/supabase";
 import {useRouter} from "next/router";
 
 export function Menu() {
   const router = useRouter();
+  const [user, setUser] = useState('Hello');
+
+  useEffect(() => {
+    setUser(supabase.auth.user());
+  }, []);
 
   const handleLogout = async () => {
     let {error} = await supabase.auth.signOut();
@@ -14,15 +20,14 @@ export function Menu() {
   }
 
   return (
-    <header className="bg-white shadow-sm">
+    <div className="bg-white shadow-sm">
       <div className="max-w-screen-xl px-4 py-8 mx-auto sm:py-12 sm:px-6 lg:px-8">
+        
         <div className="sm:justify-between sm:items-center sm:flex">
           <div className="text-center sm:text-left">
             <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
               <Link href={`/app`}>
-                <a>
-                  {supabase.auth.user() ? `Welcome, ${supabase.auth.user().email}` : 'Welcome'}
-                </a>
+                  {user ? `Welcome, ${user.email}` : 'Welcome'}
               </Link>
             </h1>
 
@@ -48,7 +53,8 @@ export function Menu() {
           </div>
 
         </div>
+
       </div>
-    </header>
+    </div>
   );
 }

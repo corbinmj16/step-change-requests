@@ -3,7 +3,7 @@ export function FormGeneralInfo({ formInfo, handleFormInfoUpdate }) {
   const priorities = ["Low", "Medium", "High", "Urgent"];
 
   return (
-    <section className="bg-white shadow p-5 rounded-lg mb-10">
+    <div className="bg-white shadow p-5 rounded-lg mb-10">
       <h2 className='text-2xl font-bold mb-5'>General Information</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
         <div className="flex flex-col">
@@ -89,6 +89,6 @@ export function FormGeneralInfo({ formInfo, handleFormInfoUpdate }) {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   )
 }

@@ -1,6 +1,6 @@
 export function FormRequestorInfo({formInfo, handleFormInfoUpdate}) {
   return (
-    <section className="flex flex-col bg-white shadow p-5 rounded-lg mb-10">
+    <div className="flex flex-col bg-white shadow p-5 rounded-lg mb-10">
       <h2 className='text-2xl font-bold mb-5'>Requester Information</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 md:gap-4">
         <div className="flex flex-col">
@@ -36,6 +36,6 @@ export function FormRequestorInfo({formInfo, handleFormInfoUpdate}) {
             placeholder="555-555-5555"/>
         </div>
       </div>
-    </section>
+    </div>
   )
 }

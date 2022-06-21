@@ -1,6 +1,6 @@
 export function FormRequestSummary({formInfo, handleFormInfoUpdate}) {
   return (
-    <section className="flex flex-col bg-white shadow p-5 rounded-lg mb-10">
+    <div className="flex flex-col bg-white shadow p-5 rounded-lg mb-10">
       <h2 className='text-2xl font-bold mb-5'>Request Summary</h2>
       <div className="grid grid-cols-1 xl:grid-cols-2 xl:gap-4">
         <div className="flex flex-col">
@@ -26,6 +26,6 @@ export function FormRequestSummary({formInfo, handleFormInfoUpdate}) {
           />
         </div>
       </div>
-    </section>
+    </div>
   )
 }

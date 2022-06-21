@@ -109,7 +109,7 @@ export function FormRequestScope({ formInfo, addScopeToInfo, deleteScope }) {
 
   return (
     <>
-      <section className="flex flex-col bg-white shadow p-5 rounded-lg mb-10">
+      <div className="flex flex-col bg-white shadow p-5 rounded-lg mb-10">
         <h2 className='text-2xl font-bold mb-5'>Scope of Work</h2>
         <div className="grid grid-cols-1 xl:grid-cols-2 xl:gap-4">
           <div className="flex flex-col">
@@ -136,13 +136,13 @@ export function FormRequestScope({ formInfo, addScopeToInfo, deleteScope }) {
           className="bg-emerald-500 hover:bg-emerald-400 rounded-lg px-5 py-3 text-white font-bold mt-5">
           Add Scope
         </button>
-      </section>
+      </div>
 
-      <section>
+      <div>
         <ol className="list-decimal list-inside">
           {formInfo.scope.map((item, idx) => <ScopeItem key={idx} item={item} idx={idx} /> )}
         </ol>
-      </section>
+      </div>
     </>
   )
 }

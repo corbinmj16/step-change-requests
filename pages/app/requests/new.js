@@ -1,7 +1,6 @@
 import {useRouter} from "next/router";
 import {useEffect, useState} from "react";
 import {supabase} from "../../../utils/supabase";
-import {useUserContext} from "../../../context/UserProvider";
 import {AppLayout} from "../../../layouts";
 import {
   FormGeneralInfo,
@@ -30,7 +29,7 @@ export default function New() {
   };
 
   const router = useRouter();
-  const user = useUserContext();
+  const user = supabase.auth.user();
   const [formInfo, setFormInfo] = useState(defaultFormInfo);
 
 
@@ -54,8 +53,6 @@ export default function New() {
     if (error) {
       throw new Error(error.message);
     }
-
-    console.log(data);
 
     await router.push('/app');
   }
@@ -87,12 +84,11 @@ export default function New() {
     const scopeToDelete = formInfo.scope.splice(idx, 1);
     // update formInfo object
     setFormInfo({...formInfo});
-    const allImages = scopeToDelete[0].images;
   }
 
   return (
     <AppLayout>
-      <section className="container flex flex-col w-full mx-auto px-3 pt-10 pb-20">
+      <div className="container flex flex-col w-full mx-auto px-3 pt-10 pb-20">
         <h1 className='text-3xl font-bold mb-10'>Create a New Request</h1>
         {/* Requester */}
         <FormRequestorInfo
@@ -128,7 +124,7 @@ export default function New() {
           className="bg-blue-500 rounded-lg text-white p-2 hover:bg-blue-400 font-bold">
           Submit
         </button>
-      </section>
+      </div>
     </AppLayout>
 
   )

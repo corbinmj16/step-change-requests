@@ -1,4 +1,3 @@
-import Link from "next/link";
 import {supabase} from "../../../utils/supabase";
 import {AppLayout} from "../../../layouts";
 
@@ -12,6 +11,13 @@ export async function getServerSideProps({params}) {
     .eq('id', id)
     .single();
 
+    // show 404 if 
+    if (!request || error) {
+      return {
+        notFound: true,
+      }
+    }
+
   return {
     props: {
       request,
@@ -22,13 +28,12 @@ export async function getServerSideProps({params}) {
 export default function RequestPage({ request }) {
   return (
     <AppLayout>
-      <section className="container flex flex-col w-full mx-auto px-3 pt-10 pb-20">
-        <h1 className='text-3xl font-bold mb-10'>The individual request for {request.id}</h1>
-        <h2>{request.title ?? ''}</h2>
-        <h3>{request.problem ?? ''}</h3>
-        <p>{request.priority ?? ''}</p>
-        <p>Need By: {request.need_by ?? 'N/A'}</p>
-      </section>
+      <div className="container flex flex-col w-full mx-auto px-3 pt-10 pb-20">
+        <h1 className='text-3xl font-bold mb-10'>{request.title}</h1>
+        <h3>Problem: {request.problem ?? ''}</h3>
+        <p>Priority: {request.priority ?? ''}</p>
+        <p>Needed By: {request.needed_by ?? 'N/A'}</p>
+      </div>
     </AppLayout>
   )
 }

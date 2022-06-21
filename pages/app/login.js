@@ -1,19 +1,20 @@
 import {LoginForm} from "../../components";
 import {useEffect} from "react";
 import {useRouter} from "next/router";
-import {useUserContext} from "../../context/UserProvider";
+import { supabase } from "../../utils/supabase";
 
 export default function Login() {
-  const user = useUserContext()
   const router = useRouter();
 
   useEffect(() => {
-    if (user) router.push('/app');
-  }, [user]);
+    if (supabase.auth.user()) {
+      router.push('/app/')
+    }
+  }, []);
 
   return (
-    <main className="min-h-screen flex flex-col justify-center items-center">
+    <div className="min-h-screen flex flex-col justify-center items-center">
       <LoginForm />
-    </main>
+    </div>
   );
 }

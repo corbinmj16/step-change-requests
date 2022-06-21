@@ -11,7 +11,7 @@ export function FormMaterials({ formInfo, addMaterialToInfo, deleteMaterialFromI
   }
 
   return (
-    <section className="flex flex-col bg-white shadow p-5 rounded-lg mb-10">
+    <div className="flex flex-col bg-white shadow p-5 rounded-lg mb-10">
       <h2 className='text-2xl font-bold mb-5'>Tools/Parts/Materials</h2>
       <div className="grid grid-cols-12 gap-4">
         <div className="flex flex-col col-span-2">
@@ -49,16 +49,20 @@ export function FormMaterials({ formInfo, addMaterialToInfo, deleteMaterialFromI
         <div className="w-full md:w-80 p-4 bg-white dark:bg-gray-800 mt-3">
           {formInfo.materials.map((material, idx) => (
             <div key={idx} className="flex items-start mb-6 rounded justify-between">
-                  <span className="rounded-full text-gray-800 ">
-                      {material.qty}
-                  </span>
+              <span className="rounded-full text-gray-800 ">
+                {material.qty}
+              </span>
               <div className="flex items-center w-full justify-between">
                 <div className="flex text-sm flex-col w-full ml-2 items-start justify-between">
                   <p className="text-gray-700 dark:text-white">
                     {material.item}
                   </p>
                   <p className="text-red-700">
-                    <button type="button" onClick={() => deleteMaterialFromInfo(idx)}>Delete</button>
+                    <button
+                      type="button"
+                      onClick={() => deleteMaterialFromInfo(idx)}>
+                      Delete
+                    </button>
                   </p>
                 </div>
               </div>
@@ -66,6 +70,6 @@ export function FormMaterials({ formInfo, addMaterialToInfo, deleteMaterialFromI
           ))}
         </div>
       )}
-    </section>
+    </div>
   )
 }
