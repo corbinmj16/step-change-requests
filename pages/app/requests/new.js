@@ -4,6 +4,7 @@ import { useUser } from "../../../context/UserProvider";
 import {supabase} from "../../../utils/supabase";
 import {AppLayout} from "../../../layouts";
 import {
+  Editor,
   FormGeneralInfo,
   FormMaterials,
   FormRequestorInfo,
@@ -20,7 +21,7 @@ export default function New() {
     craft: '',
     estimated_hours: '',
     done_by: '',
-    frequency: '',
+    frequency: 'Daily',
     needed_by: '',
     priority: '',
     problem: '',
@@ -40,15 +41,14 @@ export default function New() {
 
   const handleFormInfoUpdate = (e) => {
     const {name, value} = e.target;
-    formInfo[name] = value;
-    setFormInfo({...formInfo});
+    setFormInfo({...formInfo, [name]: value });
   }
 
   const submitNewRequest = async (e) => {
     e.preventDefault();
 
     const {data, error} = await supabase
-      .from('items')
+      .from('requests')
       .insert(formInfo);
 
     if (error) {
@@ -91,6 +91,9 @@ export default function New() {
     <AppLayout>
       <div className="container flex flex-col w-full mx-auto px-3 pt-10 pb-20">
         <h1 className='text-3xl font-bold mb-10'>Create a New Request</h1>
+        
+        <Editor />
+
         {/* Requester */}
         <FormRequestorInfo
           formInfo={formInfo}

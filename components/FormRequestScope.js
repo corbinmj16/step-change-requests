@@ -27,14 +27,14 @@ export function FormRequestScope({ formInfo, addScopeToInfo, deleteScope }) {
     const filePath = `${fileName}`;
 
     let {error} = await supabase.storage
-      .from('test-bucket')
+      .from('request-images')
       .upload(`${filePath}`, file);
 
     if (error) {
       console.log(error.message)
     }
 
-    const {data: photoUrl} = supabase.storage.from('test-bucket').getPublicUrl(filePath);
+    const {data: photoUrl} = supabase.storage.from('request-images').getPublicUrl(filePath);
     const {publicURL} = photoUrl;
 
     // update the newScope images array with the new image

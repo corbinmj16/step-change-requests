@@ -7,7 +7,7 @@ export function Requests() {
 
   const fetchRequests = async () => {
     let {data, error} = await supabase
-      .from('items')
+      .from('requests')
       .select('*')
       .order('created_at', { ascending: false });
 

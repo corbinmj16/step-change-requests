@@ -7,7 +7,7 @@ export async function getServerSideProps({params}) {
 
   // get requests from db
   const {data: request, error} = await supabase
-    .from('items')
+    .from('requests')
     .select('*')
     .eq('id', id)
     .single();

@@ -4,7 +4,7 @@ export function FormRequestorInfo({formInfo, handleFormInfoUpdate}) {
       <h2 className='text-2xl font-bold mb-5'>Requester Information</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 md:gap-4">
         <div className="flex flex-col">
-          <label htmlFor="requester">Requested By</label>
+          <label htmlFor="requester" className="font-bold">Requested By</label>
           <input
             type="text"
             name="by_name"
@@ -15,7 +15,7 @@ export function FormRequestorInfo({formInfo, handleFormInfoUpdate}) {
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email" className="font-bold">Email</label>
           <input
             type="email"
             name="by_email"
@@ -26,7 +26,7 @@ export function FormRequestorInfo({formInfo, handleFormInfoUpdate}) {
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="phone">Phone</label>
+          <label htmlFor="phone" className="font-bold">Phone</label>
           <input
             type="phone"
             name="by_phone"
