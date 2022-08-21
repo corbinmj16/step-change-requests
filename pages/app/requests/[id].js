@@ -1,6 +1,7 @@
 import {supabase} from "../../../utils/supabase";
 import {AppLayout} from "../../../layouts";
 import Image from "next/image";
+import { Document, Page, Text, View, StyleSheet, PDFDownloadLink } from '@react-pdf/renderer';
 
 export async function getServerSideProps({params}) {
   const { id } = params;
@@ -27,6 +28,71 @@ export async function getServerSideProps({params}) {
 }
 
 export default function RequestPage({ request }) {
+
+  // Create styles
+  const styles = StyleSheet.create({
+    page: {
+      flexDirection: 'column',
+      backgroundColor: '#fff'
+    },
+    section: {
+      margin: 10,
+      padding: 10,
+      flexGrow: 1
+    },
+    title: {
+      fontSize: 24,
+      color: 'red', 
+    },
+    subtitle: {
+      fontSize: 20,
+    },
+    p: {
+      fontSize: 14,
+    },
+    category: {
+      fontSize: 10,
+      color: 'blue',
+    },
+    bold: {
+      fontWeight: 'bold',
+    }
+
+  });
+
+  const ThePDF = () => {
+    return (
+      <Document>
+        <Page size="A4" style={styles.page}>
+          <View style={styles.section}>
+            <Text style={styles.title}>{request.title}</Text>
+            <Text style={styles.category}>Craft: {request.craft}</Text>
+          </View>
+          <View style={styles.section}>
+            <Text style={styles.subtitle}>General Info</Text>
+            <Text style={styles.p}><Text style={styles.bold}>Requester:</Text> {request.by_name ?? ''}</Text>
+            <Text style={styles.p}><Text style={styles.bold}>Requester Email:</Text> {request.by_email ?? ''}</Text>
+            <Text style={styles.p}><Text style={styles.bold}>Requester Phone:</Text> {request.by_phone ?? ''}</Text>
+            <Text style={styles.p}>
+              <Text style={styles.bold}>Estimated Hours:</Text> {request.estimated_hours ?? ''}</Text>
+            <Text style={styles.p}>
+              <Text style={styles.bold}>Needed By:</Text> {request.needed_by ?? 'N/A'}
+            </Text>
+          </View>
+          <View style={styles.section}>
+            <Text>Section #2</Text>
+          </View>
+          <View style={styles.section}>
+            <Text>Section #2</Text>
+          </View>
+          <View style={styles.section}>
+            <Text>Section #2</Text>
+          </View>
+        </Page>
+      </Document>
+    );
+  }
+
   if (!request) return (
     <AppLayout>
       <h1>There is no request living here.</h1>
@@ -36,6 +102,10 @@ export default function RequestPage({ request }) {
   return (
     <AppLayout>
       <div className="container flex flex-col w-full mx-auto px-3 pt-10 pb-20">
+
+        <PDFDownloadLink fileName="testing.pdf" document={<ThePDF />}>
+          Just download it
+        </PDFDownloadLink>
         <div className="mb-10">
           <h1 className='text-3xl font-bold'>{request.title}</h1>
           <p className="font-bold text-blue-500">Craft: {request.craft}</p>

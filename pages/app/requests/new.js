@@ -92,7 +92,7 @@ export default function New() {
       <div className="container flex flex-col w-full mx-auto px-3 pt-10 pb-20">
         <h1 className='text-3xl font-bold mb-10'>Create a New Request</h1>
         
-        <Editor />
+        {/* <Editor /> */}
 
         {/* Requester */}
         <FormRequestorInfo
