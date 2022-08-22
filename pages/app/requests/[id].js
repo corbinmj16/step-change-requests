@@ -1,7 +1,9 @@
 import {supabase} from "../../../utils/supabase";
 import {AppLayout} from "../../../layouts";
 import Image from "next/image";
-import { Document, Page, Text, View, StyleSheet, PDFDownloadLink } from '@react-pdf/renderer';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import { DownloadablePdf } from "../../../components";
+import { formatDate } from "../../../utils/helpers";
 
 export async function getServerSideProps({params}) {
   const { id } = params;
@@ -29,100 +31,56 @@ export async function getServerSideProps({params}) {
 
 export default function RequestPage({ request }) {
 
-  // Create styles
-  const styles = StyleSheet.create({
-    page: {
-      flexDirection: 'column',
-      backgroundColor: '#fff'
-    },
-    section: {
-      margin: 10,
-      padding: 10,
-      flexGrow: 1
-    },
-    title: {
-      fontSize: 24,
-      color: 'red', 
-    },
-    subtitle: {
-      fontSize: 20,
-    },
-    p: {
-      fontSize: 14,
-    },
-    category: {
-      fontSize: 10,
-      color: 'blue',
-    },
-    bold: {
-      fontWeight: 'bold',
-    }
-
-  });
-
-  const ThePDF = () => {
-    return (
-      <Document>
-        <Page size="A4" style={styles.page}>
-          <View style={styles.section}>
-            <Text style={styles.title}>{request.title}</Text>
-            <Text style={styles.category}>Craft: {request.craft}</Text>
-          </View>
-          <View style={styles.section}>
-            <Text style={styles.subtitle}>General Info</Text>
-            <Text style={styles.p}><Text style={styles.bold}>Requester:</Text> {request.by_name ?? ''}</Text>
-            <Text style={styles.p}><Text style={styles.bold}>Requester Email:</Text> {request.by_email ?? ''}</Text>
-            <Text style={styles.p}><Text style={styles.bold}>Requester Phone:</Text> {request.by_phone ?? ''}</Text>
-            <Text style={styles.p}>
-              <Text style={styles.bold}>Estimated Hours:</Text> {request.estimated_hours ?? ''}</Text>
-            <Text style={styles.p}>
-              <Text style={styles.bold}>Needed By:</Text> {request.needed_by ?? 'N/A'}
-            </Text>
-          </View>
-          <View style={styles.section}>
-            <Text>Section #2</Text>
-          </View>
-          <View style={styles.section}>
-            <Text>Section #2</Text>
-          </View>
-          <View style={styles.section}>
-            <Text>Section #2</Text>
-          </View>
-        </Page>
-      </Document>
-    );
-  }
-
   if (!request) return (
     <AppLayout>
       <h1>There is no request living here.</h1>
     </AppLayout>
-  )
+  );
 
   return (
     <AppLayout>
       <div className="container flex flex-col w-full mx-auto px-3 pt-10 pb-20">
 
-        <PDFDownloadLink fileName="testing.pdf" document={<ThePDF />}>
-          Just download it
-        </PDFDownloadLink>
-        <div className="mb-10">
-          <h1 className='text-3xl font-bold'>{request.title}</h1>
-          <p className="font-bold text-blue-500">Craft: {request.craft}</p>
+        <div class="inline-flex justify-end">
+          <PDFDownloadLink
+            fileName="testing.pdf"
+            document={ <DownloadablePdf request={request} /> }
+            style={{ 'backgroundColor': '#70c570', 'padding': '12px 20px', 'paddingHorizontal': '20px', 'color': '#fff', 'borderRadius': '8px' }}>
+            Just download it
+          </PDFDownloadLink>
         </div>
 
         <div className="mb-10">
-          <h2 className='text-xl mb-3'>General Info</h2>
+          <h1 className='text-3xl font-bold mb-5'>{request.title}</h1>
+
+          <h2 className='text-xl mb-3 underline'>Contact</h2>
           <p><span className="font-bold">Requester:</span> {request.by_name ?? ''}</p>
           <p><span className="font-bold">Requester Email:</span> {request.by_email ?? ''}</p>
           <p><span className="font-bold">Requester Phone:</span> {request.by_phone ?? ''}</p>
+        </div>
+
+        <div className="mb-10">
+          <h2 className='text-xl mb-3 underline'>General Info</h2>
+          <p><span className="font-bold">Craft:</span> {request.craft}</p>
+          <p><span className="font-bold">Created at:</span> {formatDate(request.created_at)}</p>
+          <p><span className="font-bold">Priority:</span> {request.priority}</p>
           <p><span className="font-bold">Estimated Hours:</span> {request.estimated_hours ?? ''}</p>
-          <p><span className="font-bold">Needed By:</span> {request.needed_by ?? 'N/A'}</p>
+          <p><span className="font-bold">Needed By:</span> {formatDate(request.needed_by) ?? 'N/A'}</p>
+        </div>
+
+        <div className="mb-10">
+          <h2 className='text-xl mb-3 underline'>Problem</h2>
+          <p>{request.problem}</p>
+        </div>
+
+        <div className="mb-10">
+          <h2 className='text-xl mb-3 underline'>Cause</h2>
+          <p>{request.cause}</p>
         </div>
         
         {request.materials.length && (
           <div className="mb-10">
-            <h2 className='text-xl mb-3'>Materials</h2>
+            <h2 className='text-xl mb-3 underline'>Materials</h2>
             <ul className="list-disc list-inside">
               {request.materials.map((material, idx) => (
                 <li key={idx}>
@@ -135,13 +93,13 @@ export default function RequestPage({ request }) {
 
         {request.scope.length > 0 && (
           <div className="mb-10">
-            <h2 className='text-xl mb-3'>Scope</h2>
+            <h2 className='text-xl mb-3 underline'>Scope</h2>
             <ul className="list-decimal list-inside">
               {request.scope.map((scope, idx) => (
                 <li key={idx}>
                   <p>{scope.details}</p>
-                  {scope.images.map((image) => (
-                    <div className="w-40 h-40 relative">
+                  {scope.images.map((image, imageIndex) => (
+                    <div className="w-40 h-40 relative" key={imageIndex}>
                     <Image
                       src={image.publicURL}
                       objectFit="contain"
@@ -153,9 +111,8 @@ export default function RequestPage({ request }) {
             </ul>
           </div>
         )}
-        
-        
+
       </div>
     </AppLayout>
-  )
+  );
 }
