@@ -14,6 +14,17 @@ export function DownloadablePdf({ request }) {
       padding: 10,
       flexGrow: 1
     },
+    scopeSectionWrapper: {
+      border: '1px solid #ddd',
+      borderRadius: '5px',
+    },
+    scopeSection: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      margin: 10,
+      backgroundColor: 'rgb(249, 250, 251)',
+      borderBottom: '1px solid #ddd',
+    },
     inline_section: {
       display: 'flex',
       flexWrap: 'wrap',
@@ -36,7 +47,7 @@ export function DownloadablePdf({ request }) {
       fontSize: 11, 
     },
     image: {
-      width: 150
+      width: '50%',
     },
     p: {
       fontSize: 11,
@@ -74,9 +85,9 @@ export function DownloadablePdf({ request }) {
           <Text style={styles.subtitle}>General Info</Text>
           <Text style={styles.p}>Craft: {request.craft}</Text>
           <Text style={styles.p}>Created at: {formatDate(request.created_at)}</Text>
+          <Text style={styles.p}>Needed By: {formatDate(request.needed_by) ?? 'N/A'}</Text>
           <Text style={styles.p}>Priority: {request.priority}</Text>
           <Text style={styles.p}>Estimated Hours: {request.estimated_hours ?? ''}</Text>
-          <Text style={styles.p}>Needed By: {formatDate(request.needed_by) ?? 'N/A'}</Text>
         </View>
 
         {request.materials.length && (
@@ -103,13 +114,20 @@ export function DownloadablePdf({ request }) {
 
         <View style={styles.section}>
           <Text style={styles.subtitle}>Scope</Text>
+          <View style={styles.scopeSectionWrapper}>
+            {request.scope.map((scope, idx) => (
+              <View style={styles.scopeSection} key={idx}>
+                <Text style={styles.p}>{idx + 1}. {scope.details}</Text>
 
-          <Text style={styles.p}>{request.scope[0].details}</Text>
-          <Image src={request.scope[0].images[0].publicURL} style={styles.image} />
+                <View>
+                  {scope.images.map((img, imgIndex) => (
+                    <Image key={imgIndex} src={img.publicURL} style={styles.image} />
+                  ))}
+                </View>
+              </View>
+            ))}
+          </View>
         </View>
-
-
-        
 
       </Page>
     </Document>

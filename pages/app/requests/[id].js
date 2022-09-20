@@ -1,7 +1,7 @@
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import Image from "next/image";
 import {supabase} from "../../../utils/supabase";
 import {AppLayout} from "../../../layouts";
-import Image from "next/image";
-import { PDFDownloadLink } from '@react-pdf/renderer';
 import { DownloadablePdf } from "../../../components";
 import { formatDate } from "../../../utils/helpers";
 
@@ -41,7 +41,7 @@ export default function RequestPage({ request }) {
     <AppLayout>
       <div className="container flex flex-col w-full mx-auto px-3 pt-10 pb-20">
 
-        <div class="inline-flex justify-end">
+        <div className="inline-flex justify-end">
           <PDFDownloadLink
             fileName="testing.pdf"
             document={ <DownloadablePdf request={request} /> }

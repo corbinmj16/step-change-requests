@@ -1,26 +1,12 @@
-import {useEffect, useState} from "react";
-import {supabase} from "../utils/supabase";
 import {Request} from "./Request";
 
-export function Requests() {
-  const [requests, setRequests] = useState([]);
+export function Requests({ requests }) {
 
-  const fetchRequests = async () => {
-    let {data, error} = await supabase
-      .from('requests')
-      .select('*')
-      .order('created_at', { ascending: false });
-
-    if (error) {
-      throw new Error(error.message);
-    }
-
-    setRequests(data);
+  if (!requests || requests.length <= 0) {
+    return (
+      <h2 className='text-3xl font-bold mb-5 mt-5'>You have no requests. Try creating a new requet.</h2>
+    )
   }
-
-  useEffect(() => {
-    fetchRequests();
-  }, [requests]);
 
   return (
     <>
