@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import {SignUpForm} from "../../components";
-import { useUser } from "../../context/UserProvider";
+import {SignUpForm} from "../components";
+import { useUser } from "../context/UserProvider";
 
 export default function Signup() {
   const router = useRouter();
@@ -9,7 +9,7 @@ export default function Signup() {
 
   useEffect(() => {
     if (user) {
-      router.push('/app/')
+      router.push('/')
     }
   }, []);
 

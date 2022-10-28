@@ -22,7 +22,7 @@ export function SignUpForm() {
   //     return;
   //   }
 
-  //   await router.push('/app')
+  //   await router.push('/')
   // }
 
   return (
@@ -83,7 +83,7 @@ export function SignUpForm() {
         </form>
       </div>
       <div className="flex items-center justify-center mt-6">
-        <Link href="/app/login">
+        <Link href="/login">
           <a className="inline-flex items-center text-xs font-thin text-center text-gray-500 hover:text-gray-700 dark:text-gray-100 dark:hover:text-white">
             Have an account?
           </a>

@@ -1,2 +1,2 @@
 export {AppLayout} from './AppLayout';
-export {WebsiteLayout} from './WebsiteLayout';
+export {ContentLayout} from './ContentLayout';

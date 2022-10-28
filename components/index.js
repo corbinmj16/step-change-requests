@@ -9,4 +9,4 @@ export { FormGeneralInfo } from './FormGeneralInfo';
 export { FormRequestSummary } from './FormRequestSummary';
 export { FormMaterials } from './FormMaterials';
 export { FormRequestScope } from './FormRequestScope';
-export { DownloadablePdf } from './DownloadablePdf';
+export { PageHeaderTitle } from './PageHeaderTitle';

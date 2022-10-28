@@ -12,12 +12,12 @@ export function UserProvider({children}) {
     if (supabase.auth.user()) {
       setUser(supabase.auth.user());
     } else {
-      router.push('/app/login')
+      router.push('/login')
     }
     
     supabase.auth.onAuthStateChange((event, session) => {
       if (session === null) {
-        router.push('/app/login');
+        router.push('/login')
         setUser(session);
         return;
       }

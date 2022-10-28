@@ -1,9 +1,9 @@
-import { PDFDownloadLink } from '@react-pdf/renderer';
-import Image from "next/image";
-import {supabase} from "../../../utils/supabase";
-import {AppLayout} from "../../../layouts";
-import { DownloadablePdf } from "../../../components";
-import { formatDate } from "../../../utils/helpers";
+import ReactToPrint from "react-to-print";
+import { useRef } from "react";
+import { supabase } from "../../utils/supabase";
+import {AppLayout, ContentLayout} from "../../layouts";
+import { formatDate } from "../../utils/helpers";
+import {PageHeaderTitle} from "../../components";
 
 export async function getServerSideProps({params}) {
   const { id } = params;
@@ -30,56 +30,49 @@ export async function getServerSideProps({params}) {
 }
 
 export default function RequestPage({ request }) {
+  const pdfRef = useRef();
 
-  if (!request) return (
-    <AppLayout>
-      <h1>There is no request living here.</h1>
-    </AppLayout>
-  );
+  const pdfFileTitle = request.title.replace(' ', '_');
 
   return (
     <AppLayout>
-      <div className="container flex flex-col w-full mx-auto px-3 pt-10 pb-20">
+      <PageHeaderTitle title={request.title} />
 
-        <div className="inline-flex justify-end">
-          <PDFDownloadLink
-            fileName="testing.pdf"
-            document={ <DownloadablePdf request={request} /> }
-            style={{ 'backgroundColor': '#70c570', 'padding': '12px 20px', 'paddingHorizontal': '20px', 'color': '#fff', 'borderRadius': '8px' }}>
-            Just download it
-          </PDFDownloadLink>
-        </div>
+      <ContentLayout ref={pdfRef}>
+        <ReactToPrint
+          trigger={() => <button className="print:hidden inline-block mt-5 font-medium text-blue-500">Save to PDF</button>}
+          documentTitle={pdfFileTitle}
+          content={() => pdfRef.current}
+        />
 
-        <div className="mb-10">
-          <h1 className='text-3xl font-bold mb-5'>{request.title}</h1>
-
+        <section className="mb-10">
           <h2 className='text-xl mb-3 underline'>Contact</h2>
           <p><span className="font-bold">Requester:</span> {request.by_name ?? ''}</p>
           <p><span className="font-bold">Requester Email:</span> {request.by_email ?? ''}</p>
           <p><span className="font-bold">Requester Phone:</span> {request.by_phone ?? ''}</p>
-        </div>
+        </section>
 
-        <div className="mb-10">
+        <section className="mb-10">
           <h2 className='text-xl mb-3 underline'>General Info</h2>
           <p><span className="font-bold">Craft:</span> {request.craft}</p>
           <p><span className="font-bold">Created at:</span> {formatDate(request.created_at)}</p>
           <p><span className="font-bold">Priority:</span> {request.priority}</p>
           <p><span className="font-bold">Estimated Hours:</span> {request.estimated_hours ?? ''}</p>
           <p><span className="font-bold">Needed By:</span> {formatDate(request.needed_by) ?? 'N/A'}</p>
-        </div>
+        </section>
 
-        <div className="mb-10">
+        <section className="mb-10">
           <h2 className='text-xl mb-3 underline'>Problem</h2>
           <p>{request.problem}</p>
-        </div>
+        </section>
 
-        <div className="mb-10">
+        <section className="mb-10">
           <h2 className='text-xl mb-3 underline'>Cause</h2>
           <p>{request.cause}</p>
-        </div>
+        </section>
         
         {request.materials.length && (
-          <div className="mb-10">
+          <section className="mb-10">
             <h2 className='text-xl mb-3 underline'>Materials</h2>
             <ul className="list-disc list-inside">
               {request.materials.map((material, idx) => (
@@ -88,31 +81,36 @@ export default function RequestPage({ request }) {
                 </li>
               ))}
             </ul>
-          </div>
+          </section>
         )}
 
         {request.scope.length > 0 && (
-          <div className="mb-10">
+          <section className="mb-10">
             <h2 className='text-xl mb-3 underline'>Scope</h2>
-            <ul className="list-decimal list-inside">
+
+            <ul>
               {request.scope.map((scope, idx) => (
-                <li key={idx}>
-                  <p>{scope.details}</p>
-                  {scope.images.map((image, imageIndex) => (
-                    <div className="w-40 h-40 relative" key={imageIndex}>
-                    <Image
-                      src={image.publicURL}
-                      objectFit="contain"
-                      layout="fill" />
+                <li key={idx} className="bg-white rounded shadow-md mb-5 p-4">
+                  <p>{idx + 1}. {scope.details}</p>
+
+                  <div className="flex flex-wrap my-4">
+                    {scope.images.map((image, imageIndex) => (
+                      <div className="relative w-full m-2" key={imageIndex}>
+                        <img
+                          src={image.publicURL}
+                          className="max-w-full"
+                        />
+                      </div>
+                    ))}
                   </div>
-                  ))}
+
                 </li>
               ))}
             </ul>
-          </div>
+          </section>
         )}
 
-      </div>
+      </ContentLayout>
     </AppLayout>
   );
 }

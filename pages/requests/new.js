@@ -1,16 +1,16 @@
 import {useRouter} from "next/router";
 import {useEffect, useState} from "react";
-import { useUser } from "../../../context/UserProvider";
-import {supabase} from "../../../utils/supabase";
-import {AppLayout} from "../../../layouts";
+import { useUser } from "../../context/UserProvider";
+import {supabase} from "../../utils/supabase";
+import {AppLayout} from "../../layouts";
 import {
   Editor,
   FormGeneralInfo,
   FormMaterials,
   FormRequestorInfo,
   FormRequestScope,
-  FormRequestSummary
-} from "../../../components";
+  FormRequestSummary, PageHeaderTitle
+} from "../../components";
 
 export default function New() {
   const defaultFormInfo = {
@@ -36,7 +36,7 @@ export default function New() {
 
 
   useEffect(() => {
-    if (!user) router.push('/app/login');
+    if (!user) router.push('/login')
   }, [])
 
   const handleFormInfoUpdate = (e) => {
@@ -55,7 +55,7 @@ export default function New() {
       throw new Error(error.message);
     }
 
-    await router.push('/app');
+    await router.push('/');
   }
 
   const addMaterialToInfo = (newMaterial) => {
@@ -89,9 +89,9 @@ export default function New() {
 
   return (
     <AppLayout>
-      <div className="container flex flex-col w-full mx-auto px-3 pt-10 pb-20">
-        <h1 className='text-3xl font-bold mb-10'>Create a New Request</h1>
-        
+      <PageHeaderTitle title="Create New Request" />
+
+      <div className="container flex flex-col mx-auto max-w-6xl py-6 sm:px-6 lg:px-8">
         {/* <Editor /> */}
 
         {/* Requester */}
@@ -120,7 +120,6 @@ export default function New() {
           formInfo={formInfo}
           addScopeToInfo={addScopeToInfo}
           deleteScope={deleteScope} />
-        {/* 0.03325832922792449.jpeg , 0.1936462417956264.png */}
 
         <button
           onClick={submitNewRequest}
