@@ -1,9 +1,9 @@
 import {Disclosure} from '@headlessui/react'
 import {Bars3Icon, XMarkIcon} from '@heroicons/react/24/outline'
 import Link from "next/link";
-import {supabase} from "../utils/supabase";
+// import {supabase} from "../utils/supabase";
 import {useRouter} from "next/router";
-import { useUser } from "../context/UserProvider";
+// import { useUser } from "../context/UserProvider";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -11,14 +11,14 @@ function classNames(...classes) {
 
 export function Menu() {
   const router = useRouter();
-  const user = useUser();
+  // const user = useUser();
 
   const handleLogout = async () => {
-    let {error} = await supabase.auth.signOut();
+    // let {error} = await supabase.auth.signOut();
 
-    if (error) throw new Error(error.message);
+    // if (error) throw new Error(error.message);
 
-    await router.push('/login');
+    // await router.push('/login');
   }
 
   return (

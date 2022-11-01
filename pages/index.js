@@ -3,13 +3,10 @@ import {Requests, PageHeaderTitle} from '../components'
 import { supabase } from "../utils/supabase";
 
 export async function getServerSideProps() {
-
   let {data: allRequests, error} = await supabase
     .from('requests')
     .select('*')
     .order('created_at', { ascending: false });
-
-  console.log(allRequests);
 
   // show 404 if
   if (!allRequests || error) {

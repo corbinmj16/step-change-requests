@@ -1,18 +1,18 @@
+import {withPageAuth} from "@supabase/auth-helpers-nextjs";
 import {LoginForm} from "../components";
 import {useEffect} from "react";
 import {useRouter} from "next/router";
-import { supabase } from "../utils/supabase";
-import { useUser } from "../context/UserProvider";
+
+export const getServerSideProps = withPageAuth({ redirectTo: '/login' })
 
 export default function Login() {
   const router = useRouter();
-  const user = useUser();
 
-  useEffect(() => {
-    if (user) {
-      router.push('/')
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (user) {
+  //     router.push('/')
+  //   }
+  // }, []);
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center">
