@@ -1,10 +1,9 @@
 import {useRouter} from "next/router";
 import {useEffect, useState} from "react";
-// import { useUser } from "../../context/UserProvider";
 import {supabase} from "../../utils/supabase";
 import {AppLayout} from "../../layouts";
+import {useSessionStore} from "../../store/useSessionStore";
 import {
-  Editor,
   FormGeneralInfo,
   FormMaterials,
   FormRequestorInfo,
@@ -31,12 +30,12 @@ export default function New() {
   };
 
   const router = useRouter();
-  // const user = useUser();
+  const session = useSessionStore((state) => state.session);
   const [formInfo, setFormInfo] = useState(defaultFormInfo);
 
 
   useEffect(() => {
-    // if (!user) router.push('/login')
+    if (session === null) router.push('/login')
   }, [])
 
   const handleFormInfoUpdate = (e) => {

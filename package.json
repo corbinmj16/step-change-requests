@@ -11,8 +11,6 @@
   "dependencies": {
     "@headlessui/react": "^1.7.3",
     "@heroicons/react": "^2.0.12",
-    "@supabase/auth-helpers-nextjs": "^0.4.2",
-    "@supabase/auth-helpers-react": "^0.3.1",
     "@supabase/supabase-js": "^2.0.4",
     "@tiptap/react": "^2.0.0-beta.109",
     "@tiptap/starter-kit": "^2.0.0-beta.185",
@@ -23,7 +21,8 @@
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-filepond": "^7.1.2",
-    "react-to-print": "^2.14.7"
+    "react-to-print": "^2.14.7",
+    "zustand": "^4.1.4"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",

@@ -1,29 +1,36 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Link from "next/link";
-// import {supabase} from "../utils/supabase";
+import {supabase} from "../utils/supabase";
 import {useRouter} from "next/router";
+import {useSessionStore} from "../store/useSessionStore";
 
 export function LoginForm() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const sessionStore = useSessionStore();
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //
-  //   // const {error} = await supabase.auth.signIn({
-  //   //   email,
-  //   //   password,
-  //   // });
-  //
-  //   // if (error) {
-  //   //   setErrorMessage(error.message);
-  //   //   return;
-  //   // }
-  //
-  //   await router.push('/');
-  // }
+  useEffect(() => {
+    if (sessionStore.session) router.push('/');
+  }, [])
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const {data, error} = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      setErrorMessage(error.message);
+      return;
+    }
+
+    sessionStore.setSession(data.session);
+    await router.push('/');
+  }
 
   return (
     <div className="flex flex-col w-full max-w-md px-4 py-8 bg-white rounded-lg shadow dark:bg-gray-800 sm:px-6 md:px-8 lg:px-10">
@@ -31,8 +38,8 @@ export function LoginForm() {
         Login To Your Account
       </h1>
       <div className="mt-8">
-        {/*<form onSubmit={(e) => handleSubmit(e, email, password)} autoComplete="off">*/}
-        <form onSubmit={(e) => console.log(e)} autoComplete="off">
+        <form onSubmit={(e) => handleSubmit(e, email, password)} autoComplete="off">
+        {/*<form onSubmit={(e) => console.log(e)} autoComplete="off">*/}
           <div className="flex flex-col mb-2">
             <div className="flex relative ">
               <span className="rounded-l-md inline-flex  items-center px-3 border-t bg-white border-l border-b  border-gray-300 text-gray-500 shadow-sm text-sm">

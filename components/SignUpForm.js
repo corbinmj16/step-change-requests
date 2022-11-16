@@ -12,15 +12,15 @@ export function SignUpForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // const {error} = await supabase.auth.signUp({
-    //   email,
-    //   password
-    // });
-    //
-    // if (error) {
-    //   setSignupError(error.message);
-    //   return;
-    // }
+    const {error} = await supabase.auth.signUp({
+      email,
+      password
+    });
+
+    if (error) {
+      setSignupError(error.message);
+      return;
+    }
 
     await router.push('/')
   }

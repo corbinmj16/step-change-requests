@@ -1,9 +1,9 @@
 import {Disclosure} from '@headlessui/react'
 import {Bars3Icon, XMarkIcon} from '@heroicons/react/24/outline'
 import Link from "next/link";
-// import {supabase} from "../utils/supabase";
+import {supabase} from "../utils/supabase";
 import {useRouter} from "next/router";
-// import { useUser } from "../context/UserProvider";
+import {useSessionStore} from "../store/useSessionStore";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -11,32 +11,39 @@ function classNames(...classes) {
 
 export function Menu() {
   const router = useRouter();
-  // const user = useUser();
+  const sessionStore = useSessionStore();
 
   const handleLogout = async () => {
-    // let {error} = await supabase.auth.signOut();
+    let {error} = await supabase.auth.signOut();
 
-    // if (error) throw new Error(error.message);
+    if (error) throw new Error(error.message);
 
-    // await router.push('/login');
+    sessionStore.setSession(null);
+
+    await router.push('/login');
   }
 
+  const isLoggedOut = sessionStore.session === null;
+
   return (
-    <div className="min-h-full">
-      <Disclosure as="nav" className="bg-gray-800">
+    <div>
+      <Disclosure as="nav" className='bg-gray-800'>
         {({open}) => (
           <>
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="flex h-16 items-center justify-between">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
-                    <img
-                      className="h-8 w-8"
-                      src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                      alt="Your Company"
-                    />
+                    <Link href="/">
+                      <img
+                        className="h-8 w-8"
+                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                        alt="Your Company"
+                      />
+                    </Link>
                   </div>
-                  <div className="hidden md:block">
+                  {/*<div className={isLoggedOut ? 'hidden' : 'hidden md:block'}>*/}
+                  <div className='hidden md:block'>
                     <div className="ml-10 flex items-baseline space-x-4">
                       <Link href="/">
                         <a className='hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium text-white'>
@@ -48,6 +55,12 @@ export function Menu() {
                           New Request
                         </a>
                       </Link>
+                      <button
+                        onClick={handleLogout}
+                        className="hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium text-white"
+                      >
+                        Logout
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -67,7 +80,7 @@ export function Menu() {
               </div>
             </div>
 
-            <Disclosure.Panel className="md:hidden">
+            <Disclosure.Panel className={isLoggedOut ? 'hidden' : 'md:hidden'}>
               <div className="space-y-1 px-2 pt-2 pb-3 sm:px-3">
                 <Link href="/">
                   <a className='hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium text-white'>
