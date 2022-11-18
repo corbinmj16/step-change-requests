@@ -11,9 +11,9 @@ export function LoginForm() {
   const [errorMessage, setErrorMessage] = useState('');
   const sessionStore = useSessionStore();
 
-  useEffect(() => {
-    if (sessionStore.session) router.push('/');
-  }, [])
+  // useEffect(() => {
+  //   if (sessionStore.session) router.push('/');
+  // }, [])
 
   const handleSubmit = async (e) => {
     e.preventDefault();

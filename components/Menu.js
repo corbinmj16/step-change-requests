@@ -3,27 +3,19 @@ import {Bars3Icon, XMarkIcon} from '@heroicons/react/24/outline'
 import Link from "next/link";
 import {supabase} from "../utils/supabase";
 import {useRouter} from "next/router";
-import {useSessionStore} from "../store/useSessionStore";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export function Menu() {
+export function Menu({user}) {
   const router = useRouter();
-  const sessionStore = useSessionStore();
 
   const handleLogout = async () => {
     let {error} = await supabase.auth.signOut();
 
-    if (error) throw new Error(error.message);
-
-    sessionStore.setSession(null);
-
-    await router.push('/login');
+    router.push('/login');
   }
-
-  const isLoggedOut = sessionStore.session === null;
 
   return (
     <div>
@@ -34,16 +26,14 @@ export function Menu() {
               <div className="flex h-16 items-center justify-between">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
-                    <Link href="/">
-                      <img
-                        className="h-8 w-8"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                        alt="Your Company"
-                      />
-                    </Link>
+                    <img
+                      className="h-8 w-8"
+                      src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                      alt="Your Company"
+                    />
                   </div>
-                  {/*<div className={isLoggedOut ? 'hidden' : 'hidden md:block'}>*/}
-                  <div className='hidden md:block'>
+
+                  <div className={!user ? 'hidden' : 'hidden md:block'}>
                     <div className="ml-10 flex items-baseline space-x-4">
                       <Link href="/">
                         <a className='hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium text-white'>
@@ -57,11 +47,10 @@ export function Menu() {
                       </Link>
                       <button
                         onClick={handleLogout}
-                        className="hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium text-white"
+                        className="self-end hover:bg-blue-600 bg-blue-400 hover:text-white px-3 py-2 rounded-md text-sm font-medium text-white"
                       >
                         Logout
                       </button>
-
                     </div>
                   </div>
                 </div>
@@ -81,7 +70,7 @@ export function Menu() {
               </div>
             </div>
 
-            <Disclosure.Panel className={isLoggedOut ? 'hidden' : 'md:hidden'}>
+            <Disclosure.Panel className={!user ? 'hidden' : 'md:hidden'}>
               <div className="space-y-1 px-2 pt-2 pb-3 sm:px-3">
 
                 <Link href="/">

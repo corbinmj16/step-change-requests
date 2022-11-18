@@ -2,7 +2,6 @@ import {useRouter} from "next/router";
 import {useEffect, useState} from "react";
 import {supabase} from "../../utils/supabase";
 import {AppLayout} from "../../layouts";
-import {useSessionStore} from "../../store/useSessionStore";
 import {
   FormGeneralInfo,
   FormMaterials,
@@ -10,8 +9,22 @@ import {
   FormRequestScope,
   FormRequestSummary, PageHeaderTitle
 } from "../../components";
+import {getUser} from "../../utils/helpers";
 
-export default function New() {
+export async function getServerSideProps({req}) {
+  const user = await getUser(req);
+
+  if (!user) {
+    return { props: {}, redirect: { destination: '/login'} };
+  }
+
+  return {
+    props: { user },
+  };
+
+}
+
+export default function New({user}) {
   const defaultFormInfo = {
     by_name: 'Craig Kerney',
     by_email: 'Craig.Kerney@arconic.com',
@@ -29,14 +42,8 @@ export default function New() {
     scope: [],
   };
 
-  const router = useRouter();
-  const session = useSessionStore((state) => state.session);
   const [formInfo, setFormInfo] = useState(defaultFormInfo);
 
-
-  useEffect(() => {
-    if (session === null) router.push('/login')
-  }, [])
 
   const handleFormInfoUpdate = (e) => {
     const {name, value} = e.target;
@@ -87,7 +94,7 @@ export default function New() {
   }
 
   return (
-    <AppLayout>
+    <AppLayout user={user}>
       <PageHeaderTitle title="Create New Request" />
 
       <div className="container flex flex-col mx-auto max-w-6xl py-6 sm:px-6 lg:px-8">

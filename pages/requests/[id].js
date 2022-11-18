@@ -1,11 +1,20 @@
 import ReactToPrint from "react-to-print";
-import { useRef } from "react";
+import {useRef, useEffect} from "react";
+import {useRouter} from "next/router";
 import { supabase } from "../../utils/supabase";
 import {AppLayout, ContentLayout} from "../../layouts";
-import { formatDate } from "../../utils/helpers";
+import {formatDate, getUser} from "../../utils/helpers";
 import {PageHeaderTitle} from "../../components";
 
-export async function getServerSideProps({params}) {
+export async function getServerSideProps({req, params}) {
+  const user = await getUser(req);
+
+  if (!user) {
+    return {
+      props: {}, redirect: { destination: '/login' }
+    }
+  }
+
   const { id } = params;
 
   // get requests from db
@@ -25,25 +34,29 @@ export async function getServerSideProps({params}) {
   return {
     props: {
       request,
+      user,
     }
   }
 }
 
-export default function RequestPage({ request }) {
+export default function RequestPage({ request, user }) {
+  const router = useRouter();
   const pdfRef = useRef();
 
   const pdfFileTitle = request.title.replace(' ', '_');
 
   return (
-    <AppLayout>
-      <PageHeaderTitle title={request.title} />
-
-      <ContentLayout ref={pdfRef}>
+    <AppLayout user={user}>
+      <PageHeaderTitle title={request.title}>
         <ReactToPrint
-          trigger={() => <button className="print:hidden inline-block mt-5 font-medium text-blue-500">Save to PDF</button>}
+          trigger={() => <button className="print:hidden inline-block mt-5 font-medium bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600">Save to PDF</button>}
           documentTitle={pdfFileTitle}
           content={() => pdfRef.current}
         />
+      </PageHeaderTitle>
+
+      <div ref={pdfRef} className="container mx-auto max-w-6xl py-6 sm:px-6 lg:px-8 print:px-5">
+        <h1 className="hidden print:block text-3xl font-bold tracking-tight text-gray-900 mb-5">{request.title}</h1>
 
         <section className="mb-10">
           <h2 className='text-xl mb-3 underline'>Contact</h2>
@@ -71,7 +84,7 @@ export default function RequestPage({ request }) {
           <p>{request.cause}</p>
         </section>
         
-        {request.materials.length && (
+        {request.materials.length > 0 && (
           <section className="mb-10">
             <h2 className='text-xl mb-3 underline'>Materials</h2>
             <ul className="list-disc list-inside">
@@ -90,12 +103,12 @@ export default function RequestPage({ request }) {
 
             <ul>
               {request.scope.map((scope, idx) => (
-                <li key={idx} className="bg-white rounded shadow-md mb-5 p-4">
+                <li key={idx} className="bg-white rounded shadow-md print:drop-shadow-none mb-5 p-4">
                   <p>{idx + 1}. {scope.details}</p>
 
-                  <div className="flex flex-wrap my-4">
+                  <div className="">
                     {scope.images.map((image, imageIndex) => (
-                      <div className="relative w-full m-2" key={imageIndex}>
+                      <div className="relative w-max-full max-w-xl m-2" key={imageIndex}>
                         <img
                           src={image.publicURL}
                           className="max-w-full"
@@ -110,7 +123,7 @@ export default function RequestPage({ request }) {
           </section>
         )}
 
-      </ContentLayout>
+      </div>
     </AppLayout>
   );
 }

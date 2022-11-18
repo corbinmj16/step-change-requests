@@ -1,13 +1,13 @@
 import {useState, useRef} from "react";
 import Image from "next/image";
-import { FilePond, registerPlugin, } from 'react-filepond';
-import FilePondPluginImageResize from 'filepond-plugin-image-resize';
-import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
-import 'filepond/dist/filepond.min.css';
-import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
+// import { FilePond, registerPlugin, File} from 'react-filepond';
+// import FilePondPluginImageResize from 'filepond-plugin-image-resize';
+// import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+// import 'filepond/dist/filepond.min.css';
+// import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 import {supabase} from "../utils/supabase";
 
-registerPlugin(FilePondPluginImageResize, FilePondPluginImagePreview);
+// registerPlugin(FilePondPluginImageResize, FilePondPluginImagePreview);
 
 export function FormRequestScope({ formInfo, addScopeToInfo, deleteScope }) {
   const defaultNewScope = {details: '', images: [],}
@@ -21,83 +21,93 @@ export function FormRequestScope({ formInfo, addScopeToInfo, deleteScope }) {
     setNewScope(defaultNewScope);
   }
 
-  const handleFile = async (data) => {
-    // data.forEach((files) => console.log(files.file));
-    // fileItems.map((fileItem) => setFiles(fileItem.file));
-    // setUploadingPhoto(true);
-    // const images = e.target.files;
-    //
-    // if (!images || images.length <= 0) {
-    //   throw new Error('You must select image(s) to upload');
-    // }
-    //
-    // const file = images[0];
-    // const {name} = file;
-    // const fileExt = file.name.split('.').pop();
-    // const fileName = `${Math.random()}.${fileExt}`;
-    // const filePath = `${fileName}`;
-    //
-    // let {error} = await supabase.storage
-    //   .from('request-images')
-    //   .upload(`${filePath}`, file);
-    //
-    // if (error) {
-    //   console.log(error.message)
-    // }
-    //
-    // const {data: photoUrl} = supabase.storage.from('request-images').getPublicUrl(filePath);
+  const downloadFile = async (filePath) => {
+    const {data, error} = await supabase
+      .storage
+      .from('request-images')
+      .download(filePath);
+
+    console.warn(data, error);
+  }
+
+  const handleFile = async (e) => {
+    setUploadingPhoto(true);
+    const images = e.target.files;
+
+    if (!images || images.length <= 0) {
+      throw new Error('You must select image(s) to upload');
+    }
+
+    const file = images[0];
+    const {name} = file;
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Math.random()}.${fileExt}`;
+    const filePath = `${fileName}`;
+
+    let {error} = await supabase.storage
+      .from('request-images')
+      .upload(`${filePath}`, file);
+
+    if (error) {
+      console.error(error.message)
+    }
+
+
+    const downloadedImage = downloadFile(filePath);
+
+    console.log(downloadedImage);
     // const {publicURL} = photoUrl;
-    //
-    // // update the newScope images array with the new image
-    // const newScopeImageData = [
-    //   ...newScope.images,
-    //   {
-    //     name,
-    //     publicURL,
-    //     fileExt,
-    //     filePath,
-    //   }
-    // ];
-    // setNewScope({...newScope, images: newScopeImageData });
-    //
-    // setUploadingPhoto(false);
-    // e.target.value = '';
+
+    // update the newScope images array with the new image
+    const newScopeImageData = [
+      ...newScope.images,
+      {
+        name,
+        publicURL,
+        fileExt,
+        filePath,
+      }
+    ];
+    setNewScope({...newScope, images: newScopeImageData });
+
+    setUploadingPhoto(false);
+    e.target.value = '';
   }
 
   const UploadButtonView = () => {
     return (
       <label
         htmlFor="images"
-        // className="border-2 border-dashed border-gray-300 w-40 h-40 flex justify-center hover:cursor-pointer hover:bg-gray-50"
+        className="border-2 border-dashed border-gray-300 w-40 h-40 flex justify-center hover:cursor-pointer hover:bg-gray-50"
       >
-        {/*<span className="self-center text-center text-blue-500">*/}
-        {/*  Upload Image*/}
-        {/*</span>*/}
+        <span className="self-center text-center text-blue-500">
+          Upload Image
+        </span>
 
-
-
-        {/*<input*/}
-        {/*  type="file"*/}
-        {/*  name="images"*/}
-        {/*  id="images"*/}
-        {/*  className="hidden"*/}
-        {/*  onChange={handleFile} />*/}
+        <input
+          type="file"
+          name="images"
+          id="images"
+          className="hidden"
+          accept="image/*"
+          onChange={handleFile} />
       </label>
     )
   }
 
-  // const ImagePreview = ({ image }) => {
-  //   return (
-  //     <div className="w-40 h-40 relative">
-  //       <Image
-  //         src={image.publicURL}
-  //         alt={image}
-  //         objectFit="cover"
-  //         layout="fill"
-  //       />
-  //     </div>
-  //   )
-  // }
+  const ImagePreview = ({ image }) => {
+    return (
+      <div className="w-40 h-40 relative">
+        <img src={image.publicURL} />
+        {/*<Image*/}
+        {/*  src={image.publicURL}*/}
+        {/*  alt={image}*/}
+        {/*  objectFit="cover"*/}
+        {/*  layout="fill"*/}
+        {/*/>*/}
+      </div>
+    )
+  }
 
   const ScopeItem = ({item, idx}) => {
     return (
@@ -139,24 +149,21 @@ export function FormRequestScope({ formInfo, addScopeToInfo, deleteScope }) {
             />
           </div>
 
-          <FilePond
-            ref={imageUploadRef}
-            oninit={() => console.log('we loaded filepond')}
-            files={files}
-            onupdatefiles={handleFile}
-            // onload={() => console.log('we did it maybe?')}
-            // ondata={(data) => console.log(data)}
-            oninitfile={(file) => console.log('file: ', file)}
-            allowMultiple={true}
-            name="file"
-            server="/api/uploadImage"
-            credits={''}
-          />
+          {/*<FilePond*/}
+          {/*  ref={imageUploadRef}*/}
+          {/*  files={files}*/}
+          {/*  acceptedFileTypes='image/*'*/}
+          {/*  onupdatefiles={(fileItems) => handleFile(fileItems)}*/}
+          {/*  allowMultiple={true}*/}
+          {/*  name="file"*/}
+          {/*  server="/api/uploadImage"*/}
+          {/*  credits={''}*/}
+          {/*/>*/}
 
-          {/*<div className={`grid grid-cols-4 gap-4`}>*/}
-          {/*  {newScope.images?.map((image, idx) => <ImagePreview image={image} key={idx} /> )}*/}
-          {/*  {uploadingPhoto ? 'Uploading...' : <UploadButtonView />}*/}
-          {/*</div>*/}
+          <div className={`grid grid-cols-4 gap-4`}>
+            {newScope.images?.map((image, idx) => <ImagePreview image={image} key={idx} /> )}
+            {uploadingPhoto ? 'Uploading...' : <UploadButtonView />}
+          </div>
         </div>
 
         <button

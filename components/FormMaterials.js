@@ -53,17 +53,16 @@ export function FormMaterials({ formInfo, addMaterialToInfo, deleteMaterialFromI
                 {material.qty}
               </span>
               <div className="flex items-center w-full justify-between">
-                <div className="flex text-sm flex-col w-full ml-2 items-start justify-between">
+                <div className="flex flex-col w-full ml-3 items-start justify-between">
                   <p className="text-gray-700 dark:text-white">
                     {material.item}
                   </p>
-                  <p className="text-red-700">
-                    <button
-                      type="button"
-                      onClick={() => deleteMaterialFromInfo(idx)}>
-                      Delete
-                    </button>
-                  </p>
+                  <button
+                    className="bg-red-400 text-white hover:bg-red-500 rounded-lg px-2 py-1 mt-2"
+                    type="button"
+                    onClick={() => deleteMaterialFromInfo(idx)}>
+                    Delete
+                  </button>
                 </div>
               </div>
             </div>
