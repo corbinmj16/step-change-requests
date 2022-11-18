@@ -61,6 +61,7 @@ export function Menu() {
                       >
                         Logout
                       </button>
+
                     </div>
                   </div>
                 </div>
@@ -82,6 +83,7 @@ export function Menu() {
 
             <Disclosure.Panel className={isLoggedOut ? 'hidden' : 'md:hidden'}>
               <div className="space-y-1 px-2 pt-2 pb-3 sm:px-3">
+
                 <Link href="/">
                   <a className='hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium text-white'>
                     Dashboard
@@ -92,20 +94,11 @@ export function Menu() {
                     New Request
                   </a>
                 </Link>
-                {/*{navigation.map((item) => (*/}
-                {/*  <Disclosure.Button*/}
-                {/*    key={item.name}*/}
-                {/*    as="a"*/}
-                {/*    href={item.href}*/}
-                {/*    className={classNames(*/}
-                {/*      item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',*/}
-                {/*      'block px-3 py-2 rounded-md text-base font-medium'*/}
-                {/*    )}*/}
-                {/*    aria-current={item.current ? 'page' : undefined}*/}
-                {/*  >*/}
-                {/*    {item.name}*/}
-                {/*  </Disclosure.Button>*/}
-                {/*))}*/}
+                <Link href="/signup">
+                  <button onClick={handleLogout} className='hover:bg-blue-600 bg-blue-400 hover:text-white px-3 py-2 rounded-md text-sm font-medium text-white'>
+                    Logout
+                  </button>
+                </Link>
               </div>
             </Disclosure.Panel>
           </>
