@@ -2,19 +2,13 @@ import {useEffect, useState} from "react";
 import Link from "next/link";
 import {supabase} from "../utils/supabase";
 import {useRouter} from "next/router";
-import {useSessionStore} from "../store/useSessionStore";
 
 export function LoginForm() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const sessionStore = useSessionStore();
-
-  // useEffect(() => {
-  //   if (sessionStore.session) router.push('/');
-  // }, [])
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
