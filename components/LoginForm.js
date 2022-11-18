@@ -8,7 +8,7 @@ export function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -22,7 +22,6 @@ export function LoginForm() {
       return;
     }
 
-    sessionStore.setSession(data.session);
     await router.push('/');
   }
 
