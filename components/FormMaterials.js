@@ -20,7 +20,7 @@ export function FormMaterials({ formInfo, addMaterialToInfo, deleteMaterialFromI
             type="number"
             placeholder='1'
             onChange={(e) => setNewMaterial({...newMaterial, qty: e.target.value })}
-            value={newMaterial.qty}
+            value={newMaterial.qty ?? 0}
             className='border-indigo-100 border-solid border-2 p-2 rounded-lg'
           />
         </div>

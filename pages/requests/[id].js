@@ -1,12 +1,13 @@
 import ReactToPrint from "react-to-print";
+import Link from "next/link";
 import {useRef, useEffect} from "react";
 import {useRouter} from "next/router";
 import { supabase } from "../../utils/supabase";
 import {AppLayout, ContentLayout} from "../../layouts";
 import {formatDate, getUser} from "../../utils/helpers";
-import {PageHeaderTitle} from "../../components";
+import {PageHeaderTitle, Modal} from "../../components";
 
-export async function getServerSideProps({req, params}) {
+export async function getServerSideProps({req, params, query}) {
   const user = await getUser(req);
 
   if (!user) {
@@ -16,6 +17,8 @@ export async function getServerSideProps({req, params}) {
   }
 
   const { id } = params;
+  const {show_updated} = query;
+
 
   // get requests from db
   const {data: request, error} = await supabase
@@ -31,28 +34,41 @@ export async function getServerSideProps({req, params}) {
       }
     }
 
+  const showUpdateModal = show_updated === 'true' ? true : false;
+
   return {
     props: {
       request,
       user,
+      showUpdateModal,
     }
   }
 }
 
-export default function RequestPage({ request, user }) {
+export default function RequestPage({ request, user, showUpdateModal }) {
   const router = useRouter();
   const pdfRef = useRef();
 
   const pdfFileTitle = request.title.replace(' ', '_');
 
+
+  const handleModalClose = () => {
+    router.replace(`/requests/${request.id}`, undefined, { shallow: true });
+  }
+
   return (
     <AppLayout user={user}>
+      <Modal isOpen={showUpdateModal} handleModalClose={handleModalClose} />
+
       <PageHeaderTitle title={request.title}>
         <ReactToPrint
-          trigger={() => <button className="print:hidden inline-block mt-5 font-medium bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600">Save to PDF</button>}
+          trigger={() => <button className="print:hidden inline-block mt-5 font-medium bg-green-500 hover:bg-green-600 text-white p-2 rounded-lg">Save to PDF</button>}
           documentTitle={pdfFileTitle}
           content={() => pdfRef.current}
         />
+        <Link href={`/requests/edit/${request.id}`}>
+          <a className="print:hidden inline-block mt-5 font-medium bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 ml-3">Edit Request</a>
+        </Link>
       </PageHeaderTitle>
 
       <div ref={pdfRef} className="container mx-auto max-w-6xl py-6 sm:px-6 lg:px-8 print:px-5">
@@ -111,7 +127,7 @@ export default function RequestPage({ request, user }) {
                       <div className="relative w-max-full max-w-xl m-2" key={imageIndex}>
                         <img
                           src={image.publicURL}
-                          className="max-w-full"
+                          // className="max-w-full"
                         />
                       </div>
                     ))}

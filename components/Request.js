@@ -43,6 +43,11 @@ export function Request({ request }) {
               {estimated_hours}
             </dd>
           </div>
+          <div className="bg-white px-6 py-2 sm:grid sm:px-6 text-center">
+            <Link href={`/requests/edit/${request.id}`}>
+              <a className="text-md font-medium text-blue-500">Edit</a>
+            </Link>
+          </div>
         </dl>
       </div>
     </div>
