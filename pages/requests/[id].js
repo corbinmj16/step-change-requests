@@ -91,13 +91,8 @@ export default function RequestPage({ request, user, showUpdateModal }) {
         </section>
 
         <section className="mb-10">
-          <h2 className='text-xl mb-3 underline'>Problem</h2>
-          <p>{request.problem}</p>
-        </section>
-
-        <section className="mb-10">
-          <h2 className='text-xl mb-3 underline'>Cause</h2>
-          <p>{request.cause}</p>
+          <h2 className='text-xl mb-3 underline'>Summary</h2>
+          <p>{request.summary}</p>
         </section>
         
         {request.materials.length > 0 && (

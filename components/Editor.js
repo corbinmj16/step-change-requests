@@ -1,32 +1,26 @@
-import { useEditor, EditorContent } from '@tiptap/react'
-import ListItem from '@tiptap/extension-ordered-list';
-import Heading from '@tiptap/extension-heading'
-import StarterKit from '@tiptap/starter-kit'
+import { useState } from 'react';
+import dynamic from "next/dynamic";
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+import 'react-quill/dist/quill.snow.css';
 
-export function Editor() {
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-    ],
-    content: '<p>Hello World! 🌎️</p>',
-  })
+export function Editor(props) {
+  const [value, setValue] = useState('');
+  const modules = {
+      toolbar: [
+        [{ 'header': [1, 2, false] }],
+        ['bold', 'italic', 'underline','strike', 'blockquote'],
+        [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+        ['link', 'image'],
+        ['clean']
+      ],
+    };
 
   return (
-    <div>
-      <ul>
-        <li>
-          <button onClick={() => editor.chain().focus().toggleBold().run()}>
-            Bold
-          </button>
-        </li>
-        <li>
-          <button onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}>
-            H1
-          </button>
-        </li>
-      </ul>
-
-      <EditorContent editor={editor} />
-    </div>
+    <>
+      <ReactQuill
+        modules={modules}
+        {...props}
+      />
+    </>
   )
 }

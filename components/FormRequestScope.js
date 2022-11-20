@@ -100,14 +100,21 @@ export function FormRequestScope({ formInfo, addScopeToInfo, deleteScope }) {
                 : (
                   <label
                     htmlFor="file-upload"
-                    className="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500"
-                  >
+                    className="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500">
                     <span>Upload a file</span>
-                    <input id="file-upload" name="file-upload" type="file" accept="image/*" className="sr-only" multiple={true} onChange={handleFile} />
+                    <input
+                      id="file-upload"
+                      name="file-upload"
+                      type="file"
+                      accept="image/*"
+                      className="sr-only"
+                      multiple={true}
+                      onChange={handleFile}
+                    />
                   </label>
                 )}
             </div>
-            <p className="text-xs text-gray-500">PNG, JPG, GIF</p>
+            {/*<p className="text-xs text-gray-500">PNG, JPG, GIF</p>*/}
           </div>
         </div>
       </div>
@@ -172,7 +179,7 @@ export function FormRequestScope({ formInfo, addScopeToInfo, deleteScope }) {
     <>
       <div className="flex flex-col bg-white shadow p-5 rounded-lg mb-10">
         <h2 className='text-2xl font-bold mb-5'>Scope of Work</h2>
-        <div className="grid grid-cols-1 xl:grid-cols-2 xl:gap-4">
+        <div className="grid grid-cols-1">
           <div className="flex flex-col">
             <label htmlFor="scope_details">Scope Details</label>
             <textarea

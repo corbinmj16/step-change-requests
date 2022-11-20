@@ -19,7 +19,7 @@ export default function MyApp({ Component, pageProps }) {
         document.cookie = `my-refresh-token=${session.refresh_token}; path=/; max-age=${maxAge}; SameSite=Lax; secure`
       }
     })
-  });
+  }, []);
 
   return (
     <div className="bg-gray-100 min-h-screen">
