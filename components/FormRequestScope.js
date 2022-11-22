@@ -1,13 +1,8 @@
 import {useState, useRef} from "react";
 import Image from "next/image";
-// import { FilePond, registerPlugin, File} from 'react-filepond';
-// import FilePondPluginImageResize from 'filepond-plugin-image-resize';
-// import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
-// import 'filepond/dist/filepond.min.css';
-// import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 import {supabase} from "../utils/supabase";
+import {ContentCard} from "./ContentCard";
 
-// registerPlugin(FilePondPluginImageResize, FilePondPluginImagePreview);
 
 export function FormRequestScope({ formInfo, addScopeToInfo, deleteScope }) {
   const defaultNewScope = {details: '', images: [],}
@@ -154,15 +149,11 @@ export function FormRequestScope({ formInfo, addScopeToInfo, deleteScope }) {
 
   const ScopeItem = ({item, idx}) => {
     return (
-      <li className="flex flex-col relative bg-white shadow p-5 pt-7 rounded-lg mb-10">
-
-        <div className="flex flex-col">
-          <p className="font-bold">{idx + 1}.</p>
-          <p className="mt-4 mb-4">{item.details}</p>
-        </div>
+      <ContentCard cardTitle={`${idx + 1}.`}>
+        <p className="mt-4 mb-4">{item.details}</p>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
-          {/*{item.images.map((image, key) => <ImagePreview key={key} image={image} /> )}*/}
+          {item.images.map((image, key) => <ImagePreview key={key} image={image} /> )}
         </div>
 
         <button
@@ -171,45 +162,29 @@ export function FormRequestScope({ formInfo, addScopeToInfo, deleteScope }) {
           onClick={() => deleteScope(idx)}>
           X
         </button>
-      </li>
+      </ContentCard>
     )
   }
 
   return (
     <>
-      <div className="flex flex-col bg-white shadow p-5 rounded-lg mb-10">
-        <h2 className='text-2xl font-bold mb-5'>Scope of Work</h2>
+      <ContentCard cardTitle="Scope of Work">
         <div className="grid grid-cols-1">
-          <div className="flex flex-col">
-            <label htmlFor="scope_details">Scope Details</label>
-            <textarea
-              name="scope_details"
-              id="scope_details"
-              onChange={(e) => setNewScope({images: [...newScope.images], details: e.target.value })}
-              className='border-indigo-100 border-solid border-2 p-2 mb-5 rounded-lg'
-              value={newScope.details}
-              placeholder="Scope details here..."
-            />
-          </div>
-
-          {/*<FilePond*/}
-          {/*  ref={imageUploadRef}*/}
-          {/*  files={files}*/}
-          {/*  acceptedFileTypes='image/*'*/}
-          {/*  onupdatefiles={(fileItems) => handleFile(fileItems)}*/}
-          {/*  allowMultiple={true}*/}
-          {/*  name="file"*/}
-          {/*  server="/api/uploadImage"*/}
-          {/*  credits={''}*/}
-          {/*/>*/}
-
-          <div className={`grid grid-cols-4 gap-4`}>
-            {newScope.images?.map((image, idx) => <ImagePreview image={image} key={idx} /> )}
-            <UploadButtonView />
-          </div>
+          <label htmlFor="scope_details">Scope Details</label>
+          <textarea
+            name="scope_details"
+            id="scope_details"
+            onChange={(e) => setNewScope({images: [...newScope.images], details: e.target.value })}
+            className='border-indigo-100 border-solid border-2 p-2 mb-5 rounded-lg'
+            value={newScope.details}
+            placeholder="Scope details here..."
+          />
         </div>
 
-
+        <div className={`grid grid-cols-4 gap-4`}>
+          {newScope.images?.map((image, idx) => <ImagePreview image={image} key={idx} /> )}
+          <UploadButtonView />
+        </div>
 
         <button
           type="button"
@@ -217,7 +192,7 @@ export function FormRequestScope({ formInfo, addScopeToInfo, deleteScope }) {
           className="bg-emerald-500 hover:bg-emerald-400 rounded-lg px-5 py-3 text-white font-bold mt-5">
           Add Scope
         </button>
-      </div>
+      </ContentCard>
 
       <div>
         <ol className="list-decimal list-inside">

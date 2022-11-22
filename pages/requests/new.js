@@ -95,7 +95,6 @@ export default function New({user}) {
 
         <FormMaterials />
 
-        {/*Scope Section */}
         <FormRequestScope
           formInfo={formInfo}
           addScopeToInfo={addScopeToInfo}
