@@ -18,8 +18,8 @@ export function Editor(props) {
   return (
     <>
       <ReactQuill
-        modules={modules}
         {...props}
+        modules={modules}
       />
     </>
   )

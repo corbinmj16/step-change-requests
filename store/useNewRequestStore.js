@@ -18,5 +18,21 @@ export const useNewRequestStore = create((set) => ({
   handleUpdateNewRequestInfo: (data) => {
     set((state) => ({...state, ...data}));
   },
+  handleAddMaterial: (newMaterial) => {
+    if (newMaterial.qty <= 0 || newMaterial.item === '') return;
+    set(
+      produce((state) => {
+        state.materials.push(newMaterial);
+      })
+    );
+  },
+  handleDeleteMaterial: (index) => {
+    set(
+      produce((state) => {
+        state.materials.splice(index, 1);
 
+        state.materials = [...state.materials];
+      })
+    );
+  },
 }));

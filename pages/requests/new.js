@@ -66,20 +66,6 @@ export default function New({user}) {
     await router.push('/');
   }
 
-  const addMaterialToInfo = (newMaterial) => {
-    // don't add nothing
-    if (newMaterial.qty <= 0 || newMaterial.item === '') return;
-
-    // add the new object to array
-    formInfo.materials.push(newMaterial);
-    setFormInfo({...formInfo});
-  }
-
-  const deleteMaterialFromInfo = (idx) => {
-    formInfo.materials.splice(idx, 1);
-    setFormInfo({...formInfo});
-  }
-
   const addScopeToInfo = async (newScope) => {
     // don't add nothing
     if (newScope.details === '') return;
@@ -100,26 +86,14 @@ export default function New({user}) {
       <PageHeaderTitle title="Create New Request" />
 
       <div className="container flex flex-col mx-auto max-w-6xl py-6 sm:px-6 lg:px-8">
-        {/* Requester */}
-        <FormRequestorInfo
-          formInfo={formInfo}
-          handleFormInfoUpdate={handleFormInfoUpdate} />
+        {/* Requester
+        <FormRequestorInfo />*/}
 
-        {/* General Info */}
-        <FormGeneralInfo
-          formInfo={formInfo}
-          handleFormInfoUpdate={handleFormInfoUpdate} />
+        <FormGeneralInfo />
 
-        {/* Request Summary */}
-        <FormRequestSummary
-          formInfo={formInfo}
-          handleFormInfoUpdate={handleFormInfoUpdate} />
+        <FormRequestSummary />
 
-        {/* Materials */}
-        <FormMaterials
-          formInfo={formInfo}
-          addMaterialToInfo={addMaterialToInfo}
-          deleteMaterialFromInfo={deleteMaterialFromInfo} />
+        <FormMaterials />
 
         {/*Scope Section */}
         <FormRequestScope

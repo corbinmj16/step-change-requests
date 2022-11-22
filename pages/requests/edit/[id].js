@@ -102,12 +102,10 @@ export default function EditPage({request, user}) {
       </PageHeaderTitle>
 
       <div className="container flex flex-col mx-auto max-w-6xl py-6 sm:px-6 lg:px-8">
-        {/* <Editor /> */}
-
         {/* Requester */}
-        <FormRequestorInfo
-          formInfo={formInfo}
-          handleFormInfoUpdate={handleFormInfoUpdate} />
+        {/*<FormRequestorInfo*/}
+        {/*  formInfo={formInfo}*/}
+        {/*  handleFormInfoUpdate={handleFormInfoUpdate} />*/}
 
         {/* General Info */}
         <FormGeneralInfo

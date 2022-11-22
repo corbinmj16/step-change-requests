@@ -5,7 +5,7 @@ import {useRouter} from "next/router";
 import { supabase } from "../../utils/supabase";
 import {AppLayout, ContentLayout} from "../../layouts";
 import {formatDate, getUser} from "../../utils/helpers";
-import {PageHeaderTitle, Modal} from "../../components";
+import {PageHeaderTitle, Modal, ContentCard} from "../../components";
 
 export async function getServerSideProps({req, params, query}) {
   const user = await getUser(req);
@@ -74,61 +74,112 @@ export default function RequestPage({ request, user, showUpdateModal }) {
       <div ref={pdfRef} className="container mx-auto max-w-6xl py-6 sm:px-6 lg:px-8 print:px-5">
         <h1 className="hidden print:block text-3xl font-bold tracking-tight text-gray-900 mb-5">{request.title}</h1>
 
-        <section className="mb-10">
-          <h2 className='text-xl mb-3 underline'>Contact</h2>
-          <p><span className="font-bold">Requester:</span> {request.by_name ?? ''}</p>
-          <p><span className="font-bold">Requester Email:</span> {request.by_email ?? ''}</p>
-          <p><span className="font-bold">Requester Phone:</span> {request.by_phone ?? ''}</p>
-        </section>
-
-        <section className="mb-10">
-          <h2 className='text-xl mb-3 underline'>General Info</h2>
-          <p><span className="font-bold">Craft:</span> {request.craft}</p>
-          <p><span className="font-bold">Created at:</span> {formatDate(request.created_at)}</p>
-          <p><span className="font-bold">Priority:</span> {request.priority}</p>
-          <p><span className="font-bold">Estimated Hours:</span> {request.estimated_hours ?? ''}</p>
-          <p><span className="font-bold">Needed By:</span> {formatDate(request.needed_by) ?? 'N/A'}</p>
-        </section>
-
-        <section className="mb-10">
-          <h2 className='text-xl mb-3 underline'>Summary</h2>
-          <p>{request.summary}</p>
-        </section>
-        
-        {request.materials.length > 0 && (
-          <section className="mb-10">
-            <h2 className='text-xl mb-3 underline'>Materials</h2>
-            <ul className="list-disc list-inside">
-              {request.materials.map((material, idx) => (
-                <li key={idx}>
-                  {material.qty} - {material.item}
-                </li>
-              ))}
-            </ul>
+        <ContentCard cardTitle="General Information">
+          <section className="overflow-x-auto relative">
+            <table className="w-full text-sm text-left text-gray-500">
+              <tbody>
+                <tr className="bg-white border-b">
+                  <th scope="row" className="py-4 px-3 font-medium text-gray-900 whitespace-nowrap">
+                    Name
+                  </th>
+                  <td className="py-4 px-3">
+                    {request.by_name ?? ''}
+                  </td>
+                </tr>
+                <tr className="bg-gray-50 border-b">
+                  <th scope="row" className="py-4 px-3 font-medium text-gray-900 whitespace-nowrap">
+                    Email
+                  </th>
+                  <td className="py-4 px-3">
+                    {request.by_email ?? ''}
+                  </td>
+                </tr>
+                <tr className="bg-white border-b">
+                  <th scope="row" className="py-4 px-3 font-medium text-gray-900 whitespace-nowrap">
+                    Phone
+                  </th>
+                  <td className="py-4 px-3">
+                    {request.by_phone ?? ''}
+                  </td>
+                </tr>
+                <tr className="bg-gray-50 border-b">
+                  <th scope="row" className="py-4 px-3 font-medium text-gray-900 whitespace-nowrap">
+                    Craft
+                  </th>
+                  <td className="py-4 px-3">
+                    {request.craft ?? ''}
+                  </td>
+                </tr>
+                <tr className="bg-white border-b">
+                  <th scope="row" className="py-4 px-3 font-medium text-gray-900 whitespace-nowrap">
+                    Created at
+                  </th>
+                  <td className="py-4 px-3">
+                    {formatDate(request.created_at)}
+                  </td>
+                </tr>
+                <tr className="bg-gray-50 border-b">
+                  <th scope="row" className="py-4 px-3 font-medium text-gray-900 whitespace-nowrap">
+                    Priority
+                  </th>
+                  <td className="py-4 px-3">
+                    {request.priority ?? ''}
+                  </td>
+                </tr>
+                <tr className="bg-white border-b">
+                  <th scope="row" className="py-4 px-3 font-medium text-gray-900 whitespace-nowrap">
+                    Estimated Hours
+                  </th>
+                  <td className="py-4 px-3">
+                    {request.estimated_hours ?? ''}
+                  </td>
+                </tr>
+                <tr className="bg-gray-50 border-b">
+                  <th scope="row" className="py-4 px-3 font-medium text-gray-900 whitespace-nowrap">
+                    Need By
+                  </th>
+                  <td className="py-4 px-3">
+                    {formatDate(request.needed_by) ?? 'N/A'}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </section>
+        </ContentCard>
+
+        <ContentCard cardTitle="Summary">
+          <section>
+            <p>{request.summary}</p>
+          </section>
+        </ContentCard>
+
+        {request.materials.length > 0 && (
+          <ContentCard cardTitle="Materials">
+            <section>
+              <ul className="list-disc list-inside">
+                {request.materials.map((material, idx) => (
+                  <li key={idx}>
+                    {material.qty} - {material.item}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          </ContentCard>
         )}
 
         {request.scope.length > 0 && (
-          <section className="mb-10">
-            <h2 className='text-xl mb-3 underline'>Scope</h2>
-
+          <section>
             <ul>
               {request.scope.map((scope, idx) => (
-                <li key={idx} className="bg-white rounded shadow-md print:drop-shadow-none mb-5 p-4">
-                  <p>{idx + 1}. {scope.details}</p>
+                <ContentCard cardTitle={`${idx + 1}.`} key={idx}>
+                  <p>{scope.details}</p>
 
-                  <div className="">
-                    {scope.images.map((image, imageIndex) => (
-                      <div className="relative w-max-full max-w-xl m-2" key={imageIndex}>
-                        <img
-                          src={image.publicURL}
-                          // className="max-w-full"
-                        />
-                      </div>
-                    ))}
-                  </div>
-
-                </li>
+                  {scope.images.map((image, imageIndex) => (
+                    <div className="relative w-max-full max-w-xl m-2" key={imageIndex}>
+                      <img src={image.publicURL} />
+                    </div>
+                  ))}
+                </ContentCard>
               ))}
             </ul>
           </section>
