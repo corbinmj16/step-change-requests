@@ -76,9 +76,10 @@ export default function EditPage({request, user}) {
       .eq('id', request.id);
 
     if (error) {
-      console.error(error);
       throw new Error(error);
     }
+
+    newRequestStore.resetNewRequestState();
 
     router.push(`/requests/${request.id}?show_updated=true`);
   }
