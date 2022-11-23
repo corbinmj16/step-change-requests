@@ -2,7 +2,7 @@ import {Fragment, useEffect, useRef, useState} from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { CheckCircleIcon } from '@heroicons/react/24/outline'
 
-export function Modal({handleModalClose, isOpen}) {
+export function Modal({handleModalClose, isOpen, message = 'You have successfully updated this request.', title = 'Success!'}) {
   const [open, setOpen] = useState(isOpen);
   const okButtonRef = useRef(null)
 
@@ -45,11 +45,11 @@ export function Modal({handleModalClose, isOpen}) {
                     </div>
                     <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                       <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
-                        Success!
+                        {title}
                       </Dialog.Title>
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">
-                          You have successfully updated this request.
+                          {message}
                         </p>
                       </div>
                     </div>

@@ -71,7 +71,7 @@ export default function RequestPage({ request, user, showUpdateModal }) {
         </Link>
       </PageHeaderTitle>
 
-      <div ref={pdfRef} className="container mx-auto max-w-6xl py-6 sm:px-6 lg:px-8 print:px-5">
+      <div ref={pdfRef} className="container flex flex-col mx-auto max-w-6xl py-6 px-4 lg:px-8">
         <h1 className="hidden print:block text-3xl font-bold tracking-tight text-gray-900 mb-5">{request.title}</h1>
 
         <ContentCard cardTitle="General Information">
@@ -142,6 +142,22 @@ export default function RequestPage({ request, user, showUpdateModal }) {
                     {formatDate(request?.needed_by) ?? 'N/A'}
                   </td>
                 </tr>
+                <tr className="bg-gray-50 border-b">
+                  <th scope="row" className="py-4 px-3 font-medium text-gray-900 whitespace-nowrap">
+                    Frequency
+                  </th>
+                  <td className="py-4 px-3">
+                    {request?.frequency}
+                  </td>
+                </tr>
+                <tr className="bg-gray-50 border-b">
+                  <th scope="row" className="py-4 px-3 font-medium text-gray-900 whitespace-nowrap">
+                    Done By
+                  </th>
+                  <td className="py-4 px-3">
+                    {request?.done_by}
+                  </td>
+                </tr>
               </tbody>
             </table>
           </section>
@@ -156,13 +172,32 @@ export default function RequestPage({ request, user, showUpdateModal }) {
         {request?.materials.length > 0 && (
           <ContentCard cardTitle="Materials">
             <section>
-              <ul className="list-disc list-inside">
-                {request.materials.map((material, idx) => (
-                  <li key={idx} className="prose max-w-none">
-                    {material.qty} - {material.item}
-                  </li>
-                ))}
-              </ul>
+              <div className="overflow-x-auto relative mt-5 sm:rounded-lg">
+                <table className="w-full text-sm text-left text-gray-500 border">
+                  <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+                  <tr>
+                    <th scope="col" className="py-3 px-6">
+                      Material Name
+                    </th>
+                    <th scope="col" className="py-3 px-6">
+                      Quantity
+                    </th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {request.materials.map((material, idx) => (
+                    <tr key={idx} className="bg-white border-b">
+                      <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap">
+                        {material.item}
+                      </th>
+                      <td className="py-4 px-6">
+                        {material.qty}
+                      </td>
+                    </tr>
+                  ))}
+                  </tbody>
+                </table>
+              </div>
             </section>
           </ContentCard>
         )}

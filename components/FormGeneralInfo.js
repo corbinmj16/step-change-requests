@@ -108,7 +108,7 @@ export function FormGeneralInfo() {
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             id="frequency">
 
-            {frequencies.map((frequency, idx) => <option key={idx} value={frequency}>{frequency}</option>)}
+            {frequencies.map((fq, idx) => <option key={idx} value={fq} >{fq}</option>)}
           </select>
         </div>
 
@@ -127,21 +127,22 @@ export function FormGeneralInfo() {
         <div className="flex flex-col mb-4 lg:mb-2">
           <label htmlFor="priority" className="block mb-2 text-sm font-medium text-gray-900">Priority</label>
           <ul className="items-center w-full text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 sm:flex">
-            {priorities.map((priority, idx) => (
+            {priorities.map((prio, idx) => (
               <li key={idx} className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                 <div className="flex items-center pl-3">
                   <input
                     type="radio"
                     name="priority"
-                    id={priority}
-                    value={priority}
+                    id={prio}
+                    value={prio}
+                    checked={prio === priority}
                     onChange={(e) => handleUpdateNewRequestInfo({priority: e.target.value})}
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
                   />
                   <label
-                    htmlFor={priority}
+                    htmlFor={prio}
                     className="py-3 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300">
-                    {priority}
+                    {prio}
                   </label>
                 </div>
               </li>

@@ -1,7 +1,7 @@
 import {useRouter} from "next/router";
 import {useEffect, useState} from "react";
 import {supabase} from "../../utils/supabase";
-import {AppLayout} from "../../layouts";
+import {AppLayout, ContentLayout} from "../../layouts";
 import {getUser} from "../../utils/helpers";
 import {useNewRequestStore} from "../../store/useNewRequestStore";
 import {
@@ -58,14 +58,14 @@ export default function New({user}) {
 
     newRequestStore.resetNewRequestState();
 
-    await router.push('/?show_success=true');
+    await router.push('/?request_success=true');
   }
 
   return (
     <AppLayout user={user}>
       <PageHeaderTitle title="New Request" />
 
-      <div className="container flex flex-col mx-auto max-w-6xl py-6 sm:px-6 lg:px-8">
+      <ContentLayout>
         {/* <FormRequestorInfo />*/}
 
         <FormGeneralInfo />
@@ -82,7 +82,7 @@ export default function New({user}) {
           className="bg-blue-500 rounded-lg text-white p-2 hover:bg-blue-400 font-bold">
           Submit
         </button>
-      </div>
+      </ContentLayout>
     </AppLayout>
   )
 }

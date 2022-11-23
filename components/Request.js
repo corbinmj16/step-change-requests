@@ -10,7 +10,7 @@ export function Request({ request }) {
   } = request;
 
   return (
-    <div className="bg-white max-w-2xl shadow overflow-hidden sm:rounded-lg mb-5">
+    <div className="bg-white max-w-2xl shadow overflow-hidden rounded-lg mb-5">
       <div className="px-4 py-4 sm:px-6">
         <h3 className="text-lg leading-6 font-medium text-gray-900">
           <Link href={`requests/${request.id}`}>

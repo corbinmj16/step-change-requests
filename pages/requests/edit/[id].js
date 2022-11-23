@@ -2,14 +2,16 @@ import {useRouter} from "next/router";
 import {useEffect, useState} from "react";
 import {supabase} from "../../../utils/supabase";
 import {getUser} from "../../../utils/helpers";
-import {AppLayout} from "../../../layouts";
+import {AppLayout, ContentLayout} from "../../../layouts";
 import {
   FormGeneralInfo,
   FormMaterials,
   FormRequestorInfo,
   FormRequestScope,
-  FormRequestSummary, PageHeaderTitle
+  FormRequestSummary,
+  PageHeaderTitle,
 } from "../../../components";
+import {useNewRequestStore} from "../../../store/useNewRequestStore";
 
 export async function getServerSideProps({req, params}) {
   const user = await getUser(req);
@@ -45,97 +47,66 @@ export async function getServerSideProps({req, params}) {
 
 export default function EditPage({request, user}) {
   const router = useRouter();
-  const [formInfo, setFormInfo] = useState(request);
+  const newRequestStore = useNewRequestStore();
 
-  const handleFormInfoUpdate = (e) => {
-    const {name, value} = e.target;
-    setFormInfo({...formInfo, [name]: value });
-  }
+  useEffect(() => {
+    newRequestStore.setAllRequestFields(request);
+  },[]);
 
-  const handleSubmit = async (e) => {
+  const submitNewRequest = async (e) => {
     e.preventDefault();
 
     const { data, error } = await supabase
       .from('requests')
-      .update(formInfo);
+      .update({
+        by_name: newRequestStore.by_name,
+        by_email: newRequestStore.by_email,
+        by_phone: newRequestStore.by_phone,
+        title: newRequestStore.title,
+        craft: newRequestStore.craft,
+        estimated_hours: newRequestStore.estimated_hours,
+        done_by: newRequestStore.done_by,
+        frequency: newRequestStore.frequency,
+        needed_by: newRequestStore.needed_by,
+        priority: newRequestStore.priority,
+        summary: newRequestStore.summary,
+        materials: newRequestStore.materials,
+        scope: newRequestStore.scope,
+      })
+      .eq('id', request.id);
 
     if (error) {
-      throw new Error(error.message);
+      console.error(error);
+      throw new Error(error);
     }
 
-    router.push(`/requests/${formInfo.id}?show_updated=true`);
-  }
-
-  const addMaterialToInfo = (newMaterial) => {
-    // don't add nothing
-    if (newMaterial.qty <= 0 || newMaterial.item === '') return;
-
-    // add the new object to array
-    formInfo.materials.push(newMaterial);
-    setFormInfo({...formInfo});
-  }
-
-  const deleteMaterialFromInfo = (idx) => {
-    formInfo.materials.splice(idx, 1);
-    setFormInfo({...formInfo});
-  }
-
-  const addScopeToInfo = async (newScope) => {
-    // don't add nothing
-    if (newScope.details === '') return;
-
-    formInfo.scope.push(newScope);
-    setFormInfo({...formInfo});
-  }
-
-  const deleteScope = async (idx) => {
-    // delete object from array.
-    const scopeToDelete = formInfo.scope.splice(idx, 1);
-    // update formInfo object
-    setFormInfo({...formInfo});
+    router.push(`/requests/${request.id}?show_updated=true`);
   }
 
   return (
     <AppLayout user={user}>
-      <PageHeaderTitle title={`${formInfo.title}`}>
+      <PageHeaderTitle title={`${request.title}`}>
         <p>Editing</p>
       </PageHeaderTitle>
 
-      <div className="container flex flex-col mx-auto max-w-6xl py-6 sm:px-6 lg:px-8">
-        {/* Requester */}
-        {/*<FormRequestorInfo*/}
-        {/*  formInfo={formInfo}*/}
-        {/*  handleFormInfoUpdate={handleFormInfoUpdate} />*/}
+      <ContentLayout>
+        {/* <FormRequestorInfo />*/}
 
-        {/* General Info */}
-        <FormGeneralInfo
-          formInfo={formInfo}
-          handleFormInfoUpdate={handleFormInfoUpdate} />
+        <FormGeneralInfo />
 
-        {/* Request Summary */}
-        <FormRequestSummary
-          formInfo={formInfo}
-          handleFormInfoUpdate={handleFormInfoUpdate} />
+        <FormRequestSummary />
 
-        {/* Materials */}
-        <FormMaterials
-          formInfo={formInfo}
-          addMaterialToInfo={addMaterialToInfo}
-          deleteMaterialFromInfo={deleteMaterialFromInfo} />
+        <FormMaterials />
 
-        {/*Scope Section */}
-        <FormRequestScope
-          formInfo={formInfo}
-          addScopeToInfo={addScopeToInfo}
-          deleteScope={deleteScope} />
+        <FormRequestScope />
 
         <button
-          onClick={handleSubmit}
+          onClick={submitNewRequest}
           type="submit"
           className="bg-blue-500 rounded-lg text-white p-2 hover:bg-blue-400 font-bold">
           Submit
         </button>
-      </div>
+      </ContentLayout>
     </AppLayout>
 
   )

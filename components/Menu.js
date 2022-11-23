@@ -71,7 +71,7 @@ export function Menu({user}) {
             </div>
 
             <Disclosure.Panel className={!user ? 'hidden' : 'md:hidden'}>
-              <div className="space-y-1 px-2 pt-2 pb-3 sm:px-3">
+              <div className="flex flex-col space-y-1 px-2 pt-2 pb-3 sm:px-3">
 
                 <Link href="/">
                   <a className='hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium text-white'>
