@@ -1,73 +1,18 @@
 import {useState, useRef} from "react";
 import Image from "next/image";
 import {supabase} from "../utils/supabase";
-import {ContentCard} from "./ContentCard";
+import {useNewRequestStore} from "../store/useNewRequestStore";
+import {ContentCard, Editor} from "../components";
 
 
-export function FormRequestScope({ formInfo, addScopeToInfo, deleteScope }) {
-  const defaultNewScope = {details: '', images: [],}
-  const imageUploadRef = useRef();
-  const [files, setFiles] = useState([]);
-  const [uploadingPhoto, setUploadingPhoto] = useState(false);
+export function FormRequestScope() {
+  const defaultNewScope = {details: ''};
   const [newScope, setNewScope] = useState(defaultNewScope);
-
-  const handleAddScope = () => {
-    addScopeToInfo(newScope);
-    setNewScope(defaultNewScope);
-  }
-
-  const downloadFile = async (filePath) => {
-    const {data, error} = await supabase
-      .storage
-      .from('request-images')
-      .download(filePath);
-
-    console.warn(data, error);
-  }
-
-  const handleFile = async (e) => {
-    setUploadingPhoto(true);
-    const images = e.target.files;
-
-    if (!images || images.length <= 0) {
-      throw new Error('You must select image(s) to upload');
-    }
-
-    const file = images[0];
-    const {name} = file;
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${Math.random()}.${fileExt}`;
-    const filePath = `${fileName}`;
-
-    let {error} = await supabase.storage
-      .from('request-images')
-      .upload(`${filePath}`, file);
-
-    if (error) {
-      console.error(error.message)
-    }
-
-
-    const downloadedImage = downloadFile(filePath);
-
-    console.log(downloadedImage);
-    // const {publicURL} = photoUrl;
-
-    // update the newScope images array with the new image
-    const newScopeImageData = [
-      ...newScope.images,
-      {
-        name,
-        publicURL,
-        fileExt,
-        filePath,
-      }
-    ];
-    setNewScope({...newScope, images: newScopeImageData });
-
-    setUploadingPhoto(false);
-    e.target.value = '';
-  }
+  const [scope, handleAddScopeItem, handleDeleteScopeItem] = useNewRequestStore((state) => [
+    state?.scope,
+    state?.handleAddScopeItem,
+    state?.handleDeleteScopeItem,
+  ]);
 
   const UploadButtonView = () => {
     return (
@@ -116,20 +61,6 @@ export function FormRequestScope({ formInfo, addScopeToInfo, deleteScope }) {
     )
   }
 
-  const ImagePreview = ({ image }) => {
-    return (
-      <div className="w-40 h-40 relative">
-        <img src={image} />
-        {/*<Image*/}
-        {/*  src={image.publicURL}*/}
-        {/*  alt={image}*/}
-        {/*  objectFit="cover"*/}
-        {/*  layout="fill"*/}
-        {/*/>*/}
-      </div>
-    )
-  }
-
   const LoadingSpinner = () => {
     return (
       <div role="status">
@@ -150,16 +81,12 @@ export function FormRequestScope({ formInfo, addScopeToInfo, deleteScope }) {
   const ScopeItem = ({item, idx}) => {
     return (
       <ContentCard cardTitle={`${idx + 1}.`}>
-        <p className="mt-4 mb-4">{item.details}</p>
-
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
-          {item.images.map((image, key) => <ImagePreview key={key} image={image} /> )}
-        </div>
+        <div dangerouslySetInnerHTML={{__html: item.details}}></div>
 
         <button
           type="button"
           className="absolute right-0 top-0 bg-red-500 text-white w-7 h-7 rounded-tr-lg"
-          onClick={() => deleteScope(idx)}>
+          onClick={() => handleDeleteScopeItem(idx)}>
           X
         </button>
       </ContentCard>
@@ -169,26 +96,20 @@ export function FormRequestScope({ formInfo, addScopeToInfo, deleteScope }) {
   return (
     <>
       <ContentCard cardTitle="Scope of Work">
-        <div className="grid grid-cols-1">
-          <label htmlFor="scope_details">Scope Details</label>
-          <textarea
-            name="scope_details"
-            id="scope_details"
-            onChange={(e) => setNewScope({images: [...newScope.images], details: e.target.value })}
-            className='border-indigo-100 border-solid border-2 p-2 mb-5 rounded-lg'
-            value={newScope.details}
-            placeholder="Scope details here..."
-          />
-        </div>
-
-        <div className={`grid grid-cols-4 gap-4`}>
-          {newScope.images?.map((image, idx) => <ImagePreview image={image} key={idx} /> )}
-          <UploadButtonView />
-        </div>
+        <Editor
+          name="scope_details"
+          id="scope_details"
+          onChange={(content) => setNewScope({ details: content })}
+          value={newScope.details}
+          placeholder="Here you can add all the details and images you need."
+        />
 
         <button
           type="button"
-          onClick={handleAddScope}
+          onClick={() => {
+            handleAddScopeItem(newScope);
+            setNewScope(defaultNewScope);
+          }}
           className="bg-emerald-500 hover:bg-emerald-400 rounded-lg px-5 py-3 text-white font-bold mt-5">
           Add Scope
         </button>
@@ -196,7 +117,7 @@ export function FormRequestScope({ formInfo, addScopeToInfo, deleteScope }) {
 
       <div>
         <ol className="list-decimal list-inside">
-          {formInfo.scope.map((item, idx) => <ScopeItem key={idx} item={item} idx={idx} /> )}
+          {scope?.length > 0 && scope.map((item, idx) => <ScopeItem key={idx} item={item} idx={idx} /> )}
         </ol>
       </div>
     </>

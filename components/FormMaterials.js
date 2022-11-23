@@ -4,9 +4,9 @@ import {useNewRequestStore} from "../store/useNewRequestStore";
 export function FormMaterials({ deleteMaterialFromInfo }) {
   const quantityRef = useRef(null);
   const [materials, handleAddMaterial, handleDeleteMaterial] = useNewRequestStore((state) => [
-    state.materials,
-    state.handleAddMaterial,
-    state.handleDeleteMaterial,
+    state?.materials,
+    state?.handleAddMaterial,
+    state?.handleDeleteMaterial,
   ]);
   const defaultNewMaterial = {qty: 0, item: ''};
   const [newMaterial, setNewMaterial] = useState(defaultNewMaterial);

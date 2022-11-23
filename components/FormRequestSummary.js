@@ -3,10 +3,10 @@ import {useNewRequestStore} from "../store/useNewRequestStore";
 import {useState} from "react";
 import {ContentCard} from "./ContentCard";
 
-export function FormRequestSummary({formInfo, handleFormInfoUpdate}) {
+export function FormRequestSummary() {
   const [summary, handleUpdateNewRequestInfo] = useNewRequestStore((state) => [
-    state.summary,
-    state.handleUpdateNewRequestInfo
+    state?.summary,
+    state?.handleUpdateNewRequestInfo
   ]);
 
   return (
@@ -14,7 +14,7 @@ export function FormRequestSummary({formInfo, handleFormInfoUpdate}) {
       <Editor
         id="summary"
         name="summary"
-        value={summary}
+        value={summary ?? ''}
         className="flex flex-col"
         onChange={(content) => handleUpdateNewRequestInfo({summary: content})}
         placeholder="The summary of this request is..."

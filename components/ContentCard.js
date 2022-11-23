@@ -1,6 +1,6 @@
 export function ContentCard({children, cardTitle}) {
   return (
-    <div className="bg-white shadow p-5 rounded-lg mb-10">
+    <div className="bg-white shadow p-5 rounded-lg mb-10 relative">
       <h2 className='text-2xl font-bold mb-5'>{cardTitle}</h2>
       {children}
     </div>

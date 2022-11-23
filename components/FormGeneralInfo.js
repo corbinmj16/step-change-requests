@@ -3,17 +3,17 @@ import {ContentCard} from "./ContentCard";
 
 export function FormGeneralInfo() {
   const [by_name, by_email, by_phone, title, craft, estimated_hours, done_by, frequency, needed_by, priority, handleUpdateNewRequestInfo] = useNewRequestStore((state) => [
-    state.by_name,
-    state.by_email,
-    state.by_phone,
-    state.title,
-    state.craft,
-    state.estimated_hours,
-    state.done_by,
-    state.frequency,
-    state.needed_by,
-    state.priority,
-    state.handleUpdateNewRequestInfo
+    state?.by_name,
+    state?.by_email,
+    state?.by_phone,
+    state?.title,
+    state?.craft,
+    state?.estimated_hours,
+    state?.done_by,
+    state?.frequency,
+    state?.needed_by,
+    state?.priority,
+    state?.handleUpdateNewRequestInfo
   ]);
   const frequencies = ["Daily", "Weekly", "Monthly", "Yearly", "Repair Only"];
   const priorities = ["Low", "Medium", "High"];

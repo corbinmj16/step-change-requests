@@ -83,7 +83,7 @@ export default function RequestPage({ request, user, showUpdateModal }) {
                     Name
                   </th>
                   <td className="py-4 px-3">
-                    {request.by_name ?? ''}
+                    {request?.by_name ?? ''}
                   </td>
                 </tr>
                 <tr className="bg-gray-50 border-b">
@@ -91,7 +91,7 @@ export default function RequestPage({ request, user, showUpdateModal }) {
                     Email
                   </th>
                   <td className="py-4 px-3">
-                    {request.by_email ?? ''}
+                    {request?.by_email ?? ''}
                   </td>
                 </tr>
                 <tr className="bg-white border-b">
@@ -99,7 +99,7 @@ export default function RequestPage({ request, user, showUpdateModal }) {
                     Phone
                   </th>
                   <td className="py-4 px-3">
-                    {request.by_phone ?? ''}
+                    {request?.by_phone ?? ''}
                   </td>
                 </tr>
                 <tr className="bg-gray-50 border-b">
@@ -107,7 +107,7 @@ export default function RequestPage({ request, user, showUpdateModal }) {
                     Craft
                   </th>
                   <td className="py-4 px-3">
-                    {request.craft ?? ''}
+                    {request?.craft ?? ''}
                   </td>
                 </tr>
                 <tr className="bg-white border-b">
@@ -115,7 +115,7 @@ export default function RequestPage({ request, user, showUpdateModal }) {
                     Created at
                   </th>
                   <td className="py-4 px-3">
-                    {formatDate(request.created_at)}
+                    {formatDate(request?.created_at) ?? ''}
                   </td>
                 </tr>
                 <tr className="bg-gray-50 border-b">
@@ -123,7 +123,7 @@ export default function RequestPage({ request, user, showUpdateModal }) {
                     Priority
                   </th>
                   <td className="py-4 px-3">
-                    {request.priority ?? ''}
+                    {request?.priority ?? ''}
                   </td>
                 </tr>
                 <tr className="bg-white border-b">
@@ -131,7 +131,7 @@ export default function RequestPage({ request, user, showUpdateModal }) {
                     Estimated Hours
                   </th>
                   <td className="py-4 px-3">
-                    {request.estimated_hours ?? ''}
+                    {request?.estimated_hours ?? ''}
                   </td>
                 </tr>
                 <tr className="bg-gray-50 border-b">
@@ -139,7 +139,7 @@ export default function RequestPage({ request, user, showUpdateModal }) {
                     Need By
                   </th>
                   <td className="py-4 px-3">
-                    {formatDate(request.needed_by) ?? 'N/A'}
+                    {formatDate(request?.needed_by) ?? 'N/A'}
                   </td>
                 </tr>
               </tbody>
@@ -148,17 +148,17 @@ export default function RequestPage({ request, user, showUpdateModal }) {
         </ContentCard>
 
         <ContentCard cardTitle="Summary">
-          <section>
-            <p>{request.summary}</p>
+          <section className="prose prose-headings:mt-2 max-w-none">
+            <div dangerouslySetInnerHTML={{__html: request?.summary}}></div>
           </section>
         </ContentCard>
 
-        {request.materials.length > 0 && (
+        {request?.materials.length > 0 && (
           <ContentCard cardTitle="Materials">
             <section>
               <ul className="list-disc list-inside">
                 {request.materials.map((material, idx) => (
-                  <li key={idx}>
+                  <li key={idx} className="prose max-w-none">
                     {material.qty} - {material.item}
                   </li>
                 ))}
@@ -167,18 +167,12 @@ export default function RequestPage({ request, user, showUpdateModal }) {
           </ContentCard>
         )}
 
-        {request.scope.length > 0 && (
+        {request?.scope.length > 0 && (
           <section>
             <ul>
               {request.scope.map((scope, idx) => (
                 <ContentCard cardTitle={`${idx + 1}.`} key={idx}>
-                  <p>{scope.details}</p>
-
-                  {scope.images.map((image, imageIndex) => (
-                    <div className="relative w-max-full max-w-xl m-2" key={imageIndex}>
-                      <img src={image.publicURL} />
-                    </div>
-                  ))}
+                  <div className="prose prose-headings:mt-2 max-w-none" dangerouslySetInnerHTML={{__html: scope.details}}></div>
                 </ContentCard>
               ))}
             </ul>

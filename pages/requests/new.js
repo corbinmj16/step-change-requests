@@ -28,66 +28,45 @@ export async function getServerSideProps({req}) {
 }
 
 export default function New({user}) {
-  const defaultFormInfo = {
-    by_name: 'Craig Kerney',
-    by_email: 'Craig.Kerney@arconic.com',
-    by_phone: '563-342-4298',
-    title: '',
-    craft: '',
-    estimated_hours: '',
-    done_by: '',
-    frequency: 'Daily',
-    needed_by: '',
-    priority: '',
-    problem: '',
-    cause: '',
-    materials: [],
-    scope: [],
-  };
-
-  const [formInfo, setFormInfo] = useState(defaultFormInfo);
-
-  const handleFormInfoUpdate = (e) => {
-    const {name, value} = e.target;
-    setFormInfo({...formInfo, [name]: value });
-  }
+  const router = useRouter();
+  const newRequestStore = useNewRequestStore();
 
   const submitNewRequest = async (e) => {
     e.preventDefault();
 
     const {data, error} = await supabase
       .from('requests')
-      .insert(formInfo);
+      .insert({
+        by_name: newRequestStore.by_name,
+        by_email: newRequestStore.by_email,
+        by_phone: newRequestStore.by_phone,
+        title: newRequestStore.title,
+        craft: newRequestStore.craft,
+        estimated_hours: newRequestStore.estimated_hours,
+        done_by: newRequestStore.done_by,
+        frequency: newRequestStore.frequency,
+        needed_by: newRequestStore.needed_by,
+        priority: newRequestStore.priority,
+        summary: newRequestStore.summary,
+        materials: newRequestStore.materials,
+        scope: newRequestStore.scope,
+      });
 
     if (error) {
       throw new Error(error.message);
     }
 
-    await router.push('/');
-  }
+    newRequestStore.resetNewRequestState();
 
-  const addScopeToInfo = async (newScope) => {
-    // don't add nothing
-    if (newScope.details === '') return;
-
-    formInfo.scope.push(newScope);
-    setFormInfo({...formInfo});
-  }
-
-  const deleteScope = async (idx) => {
-    // delete object from array.
-    const scopeToDelete = formInfo.scope.splice(idx, 1);
-    // update formInfo object
-    setFormInfo({...formInfo});
+    await router.push('/?show_success=true');
   }
 
   return (
     <AppLayout user={user}>
-      <PageHeaderTitle title="Create New Request" />
+      <PageHeaderTitle title="New Request" />
 
       <div className="container flex flex-col mx-auto max-w-6xl py-6 sm:px-6 lg:px-8">
-        {/* Requester
-        <FormRequestorInfo />*/}
+        {/* <FormRequestorInfo />*/}
 
         <FormGeneralInfo />
 
@@ -95,10 +74,7 @@ export default function New({user}) {
 
         <FormMaterials />
 
-        <FormRequestScope
-          formInfo={formInfo}
-          addScopeToInfo={addScopeToInfo}
-          deleteScope={deleteScope} />
+        <FormRequestScope />
 
         <button
           onClick={submitNewRequest}
@@ -108,6 +84,5 @@ export default function New({user}) {
         </button>
       </div>
     </AppLayout>
-
   )
 }
