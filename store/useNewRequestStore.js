@@ -53,37 +53,17 @@ export const useNewRequestStore = create((set) => ({
     }));
   },
   resetNewRequestState: () => {
-    set((state) => {
-      state.by_name = "Craig Kerney";
-      state.by_email = "craig@email.com";
-      state.by_phone = "123-123-1234";
-      state.title = "";
-      state.craft = "";
-      state.estimated_hours = "";
-      state.done_by = "";
-      state.frequency = "";
-      state.needed_by = "";
-      state.priority = "";
-      state.summary = "";
-      state.materials = [];
-      state.scope = [];
-    })
+    set(produce((state) => {
+      for (const key in defaultState) {
+        state[key] = defaultState[key];
+      }
+    }));
   },
   setAllRequestFields: (request) => {
     set(produce((state) => {
-      state.by_name = request.by_name;
-      state.by_email = request.by_email;
-      state.by_phone = request.by_phone;
-      state.title = request.title;
-      state.craft = request.craft;
-      state.estimated_hours = request.estimated_hours;
-      state.done_by = request.done_by;
-      state.frequency = request.frequency;
-      state.needed_by = request.needed_by;
-      state.priority = request.priority;
-      state.summary = request.summary;
-      state.materials = request.materials;
-      state.scope = request.scope;
-    }))
+      for (const key in request) {
+        state[key] = request[key];
+      }
+    }));
   }
 }));

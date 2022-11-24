@@ -65,10 +65,10 @@ export function FormMaterials({ deleteMaterialFromInfo }) {
             <thead className="text-xs text-gray-700 uppercase bg-gray-50">
               <tr>
                 <th scope="col" className="py-3 px-6">
-                  Material Name
+                  Quantity
                 </th>
                 <th scope="col" className="py-3 px-6">
-                  Quantity
+                  Material Name
                 </th>
                 <th scope="col" className="py-3 px-6">
                 </th>
@@ -80,12 +80,12 @@ export function FormMaterials({ deleteMaterialFromInfo }) {
             <tbody>
             {materials.map((material, idx) => (
               <tr key={idx} className="bg-white border-b">
-                <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap">
-                  {material.item}
-                </th>
                 <td className="py-4 px-6">
                   {material.qty}
                 </td>
+                <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap">
+                  {material.item}
+                </th>
                 <td className="py-4 px-6">
                   <button
                     className="bg-red-400 text-white hover:bg-red-500 rounded-lg px-2 py-1 mt-2"

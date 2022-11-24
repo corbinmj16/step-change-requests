@@ -76,6 +76,7 @@ export default function EditPage({request, user}) {
       .eq('id', request.id);
 
     if (error) {
+      console.error(error);
       throw new Error(error);
     }
 
@@ -87,7 +88,7 @@ export default function EditPage({request, user}) {
   return (
     <AppLayout user={user}>
       <PageHeaderTitle title={`${request.title}`}>
-        <p>Editing</p>
+        <p className="italics">Editing</p>
       </PageHeaderTitle>
 
       <ContentLayout>

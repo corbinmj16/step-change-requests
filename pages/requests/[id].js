@@ -6,6 +6,7 @@ import { supabase } from "../../utils/supabase";
 import {AppLayout, ContentLayout} from "../../layouts";
 import {formatDate, getUser} from "../../utils/helpers";
 import {PageHeaderTitle, Modal, ContentCard} from "../../components";
+import {useNewRequestStore} from "../../store/useNewRequestStore";
 
 export async function getServerSideProps({req, params, query}) {
   const user = await getUser(req);
@@ -48,9 +49,7 @@ export async function getServerSideProps({req, params, query}) {
 export default function RequestPage({ request, user, showUpdateModal }) {
   const router = useRouter();
   const pdfRef = useRef();
-
   const pdfFileTitle = request.title.replace(' ', '_');
-
 
   const handleModalClose = () => {
     router.replace(`/requests/${request.id}`, undefined, { shallow: true });
@@ -177,22 +176,22 @@ export default function RequestPage({ request, user, showUpdateModal }) {
                   <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                   <tr>
                     <th scope="col" className="py-3 px-6">
-                      Material Name
+                      Quantity
                     </th>
                     <th scope="col" className="py-3 px-6">
-                      Quantity
+                      Material Name
                     </th>
                   </tr>
                   </thead>
                   <tbody>
                   {request.materials.map((material, idx) => (
                     <tr key={idx} className="bg-white border-b">
-                      <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap">
-                        {material.item}
-                      </th>
                       <td className="py-4 px-6">
                         {material.qty}
                       </td>
+                      <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap">
+                        {material.item}
+                      </th>
                     </tr>
                   ))}
                   </tbody>
