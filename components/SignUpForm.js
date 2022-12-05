@@ -2,6 +2,8 @@ import Link from 'next/link';
 import {useState} from "react";
 import {useRouter} from "next/router";
 import {supabase} from "../utils/supabase";
+import Image from "next/image";
+import logo from "../public/logo-black.png";
 
 export function SignUpForm() {
   const router = useRouter();
@@ -27,8 +29,15 @@ export function SignUpForm() {
 
   return (
     <div className="flex flex-col w-full max-w-md px-4 py-8 bg-white rounded-lg shadow sm:px-6 md:px-8 lg:px-10">
-      <h1 className="self-center mb-6 text-xl font-light text-gray-600 sm:text-2xl">
-        Create New Account
+      <div className="relative w-40 h-40 m-auto">
+        <Image
+          src={logo}
+          layout="fill"
+          objectFit="contain"
+        />
+      </div>
+      <h1 className="self-center text-xl text-gray-600 sm:text-2xl">
+        Create Account
       </h1>
       <div className="mt-8">
         <form onSubmit={handleSubmit}>
@@ -84,7 +93,7 @@ export function SignUpForm() {
       </div>
       <div className="flex items-center justify-center mt-6">
         <Link href="/login">
-          <a className="inline-flex items-center text-xs font-thin text-center text-gray-500 hover:text-gray-700">
+          <a className="inline-flex items-center text-xs text-center text-gray-500 hover:text-gray-700">
             Have an account?
           </a>
         </Link>

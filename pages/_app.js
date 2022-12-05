@@ -1,8 +1,7 @@
 import '../styles/globals.css';
-import {Menu} from "../components";
 import {supabase} from "../utils/supabase";
 import {useEffect} from "react";
-import {getUser} from "../utils/helpers";
+import {Menu} from "../components";
 
 export default function MyApp({ Component, pageProps }) {
 

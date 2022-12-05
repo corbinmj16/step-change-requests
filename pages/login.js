@@ -1,6 +1,7 @@
 import {LoginForm} from "../components";
-import {supabase} from "../utils/supabase";
 import {getUser} from "../utils/helpers";
+import logo from '../public/logo-black.png';
+import Image from "next/image";
 
 export async function getServerSideProps({req}) {
   const user = await getUser(req);

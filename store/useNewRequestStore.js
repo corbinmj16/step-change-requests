@@ -1,6 +1,5 @@
 import create from 'zustand';
 import produce from "immer";
-import {supabase} from "../utils/supabase";
 
 const defaultState = {
   by_name: "Craig Kerney",
