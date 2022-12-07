@@ -29,7 +29,7 @@ export function LoginForm() {
 
   return (
     <div className="flex flex-col w-full max-w-md px-4 py-8 bg-white rounded-lg shadow sm:px-6 md:px-8 lg:px-10">
-      <div className="relative w-40 h-40 m-auto">
+      <div className="relative w-32 h-32 m-auto">
         <Image
           src={logo}
           layout="fill"

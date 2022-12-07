@@ -29,7 +29,7 @@ export function SignUpForm() {
 
   return (
     <div className="flex flex-col w-full max-w-md px-4 py-8 bg-white rounded-lg shadow sm:px-6 md:px-8 lg:px-10">
-      <div className="relative w-40 h-40 m-auto">
+      <div className="relative w-32 h-32 m-auto">
         <Image
           src={logo}
           layout="fill"
@@ -61,7 +61,7 @@ export function SignUpForm() {
             </div>
           </div>
 
-          <div className="flex flex-col mb-2">
+          <div className="flex flex-col mb-6">
               <div className="flex relative ">
                 <span className="rounded-l-md inline-flex  items-center px-3 border-t bg-white border-l border-b  border-gray-300 text-gray-500 shadow-sm text-sm">
                   <svg
@@ -85,7 +85,7 @@ export function SignUpForm() {
 
           <button
             type="submit"
-            onClick={handleSubmit}
+            // onClick={handleSubmit}
             className="py-2 px-4 bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg">
             Create
           </button>

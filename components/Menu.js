@@ -1,8 +1,10 @@
 import {Disclosure} from '@headlessui/react'
 import {Bars3Icon, XMarkIcon} from '@heroicons/react/24/outline'
+import Image from 'next/image';
 import Link from "next/link";
 import {supabase} from "../utils/supabase";
 import {useRouter} from "next/router";
+import logo from "../public/logo-white.png";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -26,11 +28,15 @@ export function Menu({user}) {
               <div className="flex h-16 items-center justify-between">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
-                    <img
-                      className="h-8 w-8"
-                      src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                      alt="Your Company"
-                    />
+                      <Link href="/">
+                        <a className="relative block w-16 h-16 m-auto">
+                          <Image
+                            src={logo}
+                            layout="fill"
+                            objectFit="contain"
+                          />
+                        </a>
+                      </Link>
                   </div>
 
                   <div className={!user ? 'hidden' : 'hidden md:block'}>
@@ -47,7 +53,7 @@ export function Menu({user}) {
                       </Link>
                       <button
                         onClick={handleLogout}
-                        className="self-end hover:bg-blue-600 bg-blue-400 hover:text-white px-3 py-2 rounded-md text-sm font-medium text-white"
+                        className="justify-end hover:bg-blue-600 bg-blue-400 hover:text-white px-3 py-2 rounded-md text-sm font-medium text-white"
                       >
                         Logout
                       </button>

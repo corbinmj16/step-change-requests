@@ -1,7 +1,6 @@
 import '../styles/globals.css';
 import {supabase} from "../utils/supabase";
 import {useEffect} from "react";
-import {Menu} from "../components";
 
 export default function MyApp({ Component, pageProps }) {
 

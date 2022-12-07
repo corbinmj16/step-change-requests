@@ -6,6 +6,7 @@ import {
   Requests,
   PageHeaderTitle,
   Modal,
+  Homepage,
 } from '../components'
 
 export async function getServerSideProps({req, query}) {
@@ -46,18 +47,22 @@ export default function Dashboard({ requests, user, showSuccessModal }) {
   }
 
   return (
-    <AppLayout user={user}>
-      <Modal
-        isOpen={showSuccessModal}
-        handleModalClose={handleModalClose}
-        message="You've successfully created a request."
-      />
+    <>
+      <AppLayout user={user}>
+        <Modal
+          isOpen={showSuccessModal}
+          handleModalClose={handleModalClose}
+          message="You've successfully created a request."
+        />
 
-      <PageHeaderTitle title='Dashboard' />
+        <PageHeaderTitle title='Dashboard' />
 
-      <ContentLayout>
-        <Requests requests={requests} />
-      </ContentLayout>
-    </AppLayout>
+        <ContentLayout>
+          <Requests requests={requests} />
+        </ContentLayout>
+      </AppLayout>
+
+      {/*<Homepage />*/}
+    </>
   )
 }

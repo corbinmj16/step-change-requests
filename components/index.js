@@ -12,3 +12,4 @@ export { FormRequestScope } from './FormRequestScope';
 export { PageHeaderTitle } from './PageHeaderTitle';
 export { Modal } from './Modal';
 export { ContentCard } from './ContentCard';
+export { Homepage } from './Homepage';
