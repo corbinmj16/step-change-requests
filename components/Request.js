@@ -13,7 +13,7 @@ export function Request({ request }) {
     <div className="bg-white max-w-2xl shadow overflow-hidden rounded-lg mb-5">
       <div className="px-4 py-4 sm:px-6">
         <h3 className="text-lg leading-6 font-medium text-gray-900">
-          <Link href={`/requests/${request.id}`}>
+          <Link href={`/app/requests/${request.id}`}>
             <a className="text-blue-500">
               {title}
             </a>
@@ -44,7 +44,7 @@ export function Request({ request }) {
             </dd>
           </div>
           <div className="bg-white px-6 py-2 sm:grid sm:px-6 text-center">
-            <Link href={`/requests/edit/${request.id}`}>
+            <Link href={`/app/requests/edit/${request.id}`}>
               <a className="text-md font-medium text-blue-500">Edit</a>
             </Link>
           </div>

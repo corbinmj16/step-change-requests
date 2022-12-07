@@ -1,17 +1,16 @@
 import {useRouter} from "next/router";
-import {useEffect, useState} from "react";
-import {supabase} from "../../../utils/supabase";
-import {getUser} from "../../../utils/helpers";
-import {AppLayout, ContentLayout} from "../../../layouts";
+import {useEffect} from "react";
+import {supabase} from "../../../../utils/supabase";
+import {getUser} from "../../../../utils/helpers";
+import {AppLayout, ContentLayout} from "../../../../layouts";
 import {
   FormGeneralInfo,
   FormMaterials,
-  FormRequestorInfo,
   FormRequestScope,
   FormRequestSummary,
   PageHeaderTitle,
-} from "../../../components";
-import {useNewRequestStore} from "../../../store/useNewRequestStore";
+} from "../../../../components";
+import {useNewRequestStore} from "../../../../store/useNewRequestStore";
 
 export async function getServerSideProps({req, params}) {
   const user = await getUser(req);
@@ -82,7 +81,7 @@ export default function EditPage({request, user}) {
 
     newRequestStore.resetNewRequestState();
 
-    router.push(`/requests/${request.id}?show_updated=true`);
+    router.push(`/app/requests/${request.id}?show_updated=true`);
   }
 
   return (
@@ -92,8 +91,6 @@ export default function EditPage({request, user}) {
       </PageHeaderTitle>
 
       <ContentLayout>
-        {/* <FormRequestorInfo />*/}
-
         <FormGeneralInfo />
 
         <FormRequestSummary />
