@@ -2,11 +2,11 @@ import ReactToPrint from "react-to-print";
 import Link from "next/link";
 import {useRef, useEffect} from "react";
 import {useRouter} from "next/router";
-import { supabase } from "../../utils/supabase";
-import {AppLayout, ContentLayout} from "../../layouts";
-import {formatDate, getUser} from "../../utils/helpers";
-import {PageHeaderTitle, Modal, ContentCard} from "../../components";
-import {useNewRequestStore} from "../../store/useNewRequestStore";
+import { supabase } from "../../../utils/supabase";
+import {AppLayout, ContentLayout} from "../../../layouts";
+import {formatDate, getUser} from "../../../utils/helpers";
+import {PageHeaderTitle, Modal, ContentCard} from "../../../components";
+import {useNewRequestStore} from "../../../store/useNewRequestStore";
 
 export async function getServerSideProps({req, params, query}) {
   const user = await getUser(req);
@@ -52,7 +52,7 @@ export default function RequestPage({ request, user, showUpdateModal }) {
   const pdfFileTitle = request.title.replace(' ', '_');
 
   const handleModalClose = () => {
-    router.replace(`/requests/${request.id}`, undefined, { shallow: true });
+    router.replace(`/app/requests/${request.id}`, undefined, { shallow: true });
   }
 
   return (
@@ -65,7 +65,7 @@ export default function RequestPage({ request, user, showUpdateModal }) {
           documentTitle={pdfFileTitle}
           content={() => pdfRef.current}
         />
-        <Link href={`/requests/edit/${request.id}`}>
+        <Link href={`/app/requests/edit/${request.id}`}>
           <a className="print:hidden inline-block mt-5 font-medium bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 ml-3">Edit Request</a>
         </Link>
       </PageHeaderTitle>

@@ -1,11 +1,10 @@
 import {Menu} from "../components";
-import Link from "next/link";
 
 export function AppLayout({ children, user }) {
   return (
     <>
       <Menu user={user} />
-      <main>
+      <main className="bg-gray-100 min-h-screen">
           {children}
       </main>
     </>

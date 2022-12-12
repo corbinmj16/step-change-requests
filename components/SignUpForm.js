@@ -24,7 +24,7 @@ export function SignUpForm() {
       return;
     }
 
-    await router.push('/')
+    await router.push('/app')
   }
 
   return (

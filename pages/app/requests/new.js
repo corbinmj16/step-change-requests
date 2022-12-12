@@ -1,18 +1,17 @@
 import {useRouter} from "next/router";
-import {useEffect, useState} from "react";
-import {supabase} from "../../utils/supabase";
-import {AppLayout, ContentLayout} from "../../layouts";
-import {getUser} from "../../utils/helpers";
-import {useNewRequestStore} from "../../store/useNewRequestStore";
+import {useEffect} from "react";
+import {supabase} from "../../../utils/supabase";
+import {AppLayout, ContentLayout} from "../../../layouts";
+import {getUser} from "../../../utils/helpers";
+import {useNewRequestStore} from "../../../store/useNewRequestStore";
 import {
   FormGeneralInfo,
   FormMaterials,
-  FormRequestorInfo,
   FormRequestScope,
   FormRequestSummary,
   PageHeaderTitle,
   Editor,
-} from "../../components";
+} from "../../../components";
 
 export async function getServerSideProps({req}) {
   const user = await getUser(req);
@@ -62,7 +61,7 @@ export default function New({user}) {
 
     newRequestStore.resetNewRequestState();
 
-    await router.push('/?request_success=true');
+    await router.push('/app/?request_success=true');
   }
 
   return (
@@ -70,8 +69,6 @@ export default function New({user}) {
       <PageHeaderTitle title="New Request" />
 
       <ContentLayout>
-        {/* <FormRequestorInfo />*/}
-
         <FormGeneralInfo />
 
         <FormRequestSummary />

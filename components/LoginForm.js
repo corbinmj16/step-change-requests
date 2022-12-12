@@ -24,7 +24,7 @@ export function LoginForm() {
       return;
     }
 
-    await router.push('/');
+    await router.push('/app');
   }
 
   return (
@@ -75,7 +75,7 @@ export function LoginForm() {
               </span>
               <input
                 type="password"
-                id="sign-in-email"
+                id="sign-in-password"
                 onChange={(e) => setPassword(e.target.value)}
                 className=" rounded-r-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent"
                 placeholder="Your password"
