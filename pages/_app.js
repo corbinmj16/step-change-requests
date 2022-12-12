@@ -1,6 +1,6 @@
-import '../styles/globals.css';
-import {supabase} from "../utils/supabase";
 import {useEffect} from "react";
+import {supabase} from "../utils/supabase";
+import '../styles/globals.css';
 
 export default function MyApp({ Component, pageProps }) {
 
@@ -16,13 +16,11 @@ export default function MyApp({ Component, pageProps }) {
         document.cookie = `my-access-token=${session.access_token}; path=/; max-age=${maxAge}; SameSite=Lax; secure`
         document.cookie = `my-refresh-token=${session.refresh_token}; path=/; max-age=${maxAge}; SameSite=Lax; secure`
       }
-    })
+    });
   }, []);
 
   return (
-    <div className="bg-gray-100 min-h-screen">
       <Component {...pageProps} />
-    </div>
   )
 
 };

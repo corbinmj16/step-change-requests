@@ -1,5 +1,6 @@
-import {Menu, SignUpForm} from "../components";
 import {getUser} from "../utils/helpers";
+import {SignUpForm} from "../components";
+import {AppLayout} from "../layouts";
 
 export async function getServerSideProps({req}) {
   const user = await getUser(req);
@@ -13,11 +14,10 @@ export async function getServerSideProps({req}) {
 
 export default function Signup() {
   return (
-    <>
-      <Menu />
+    <AppLayout>
       <div className="min-h-screen flex flex-col justify-center items-center">
         <SignUpForm />
       </div>
-    </>
+    </AppLayout>
   )
 }

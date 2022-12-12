@@ -1,5 +1,6 @@
-import {LoginForm, Menu} from "../components";
 import {getUser} from "../utils/helpers";
+import {LoginForm} from "../components";
+import {AppLayout} from "../layouts";
 
 export async function getServerSideProps({req}) {
   const user = await getUser(req);
@@ -13,11 +14,10 @@ export async function getServerSideProps({req}) {
 
 export default function Login() {
   return (
-    <>
-      <Menu />
+    <AppLayout>
       <div className="min-h-screen flex flex-col justify-center items-center">
         <LoginForm />
       </div>
-    </>
+    </AppLayout>
   );
 }
