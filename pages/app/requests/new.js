@@ -29,6 +29,7 @@ export async function getServerSideProps({req}) {
 export default function New({user}) {
   const router = useRouter();
   const resetNewRequestState = useNewRequestStore((state) => state.resetNewRequestState);
+  const newRequestStore = useNewRequestStore();
 
   useEffect(() => {
     resetNewRequestState();
