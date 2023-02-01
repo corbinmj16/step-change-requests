@@ -1,4 +1,5 @@
 import {useRouter} from "next/router";
+import {useEffect, useState} from "react";
 import {supabase} from "../../utils/supabase";
 import {AppLayout, ContentLayout} from "../../layouts";
 import {getUser} from '../../utils/helpers';
@@ -9,14 +10,12 @@ import {
   Homepage,
 } from '../../components';
 
-export async function getServerSideProps({req, query}) {
+export async function getServerSideProps({req}) {
   const user = await getUser(req);
 
   if (!user) {
     return { props: {}, redirect: {destination: "/login"} }
   }
-
-  const {request_success} = query;
 
   let {data: allRequests, error} = await supabase
     .from('requests')
@@ -34,16 +33,26 @@ export async function getServerSideProps({req, query}) {
     props: {
       requests: allRequests,
       user,
-      showSuccessModal: request_success === 'true' ? true : false,
     }
   }
 }
 
-export default function Dashboard({ requests, user, showSuccessModal }) {
+export default function Dashboard({ requests, user }) {
   const router = useRouter();
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
+  useEffect(() => {
+    urlHasSuccess();
+  }, [])
   const handleModalClose = () => {
+    setShowSuccessModal(false);
     router.replace(`/app`, undefined, { shallow: true });
+  }
+
+  const urlHasSuccess = () => {
+    if ('request_success' in router.query) {
+      setShowSuccessModal(true);
+    }
   }
 
   return (

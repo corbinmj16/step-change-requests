@@ -19,7 +19,7 @@ export function SignUpForm() {
       password,
       options: {
         /** The redirect url embedded in the email link */
-        emailRedirectTo: "https://www.stepchange.consulting/login",
+        emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/login?email=${email}`,
       },
     });
 
@@ -28,7 +28,7 @@ export function SignUpForm() {
       return;
     }
 
-    await router.push('/app')
+    await router.push('/login?new_account=true')
   }
 
   return (

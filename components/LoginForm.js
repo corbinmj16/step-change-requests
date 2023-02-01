@@ -11,6 +11,10 @@ export function LoginForm() {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
+  useEffect(() => {
+    urlHasEmail();
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -25,6 +29,12 @@ export function LoginForm() {
     }
 
     await router.push('/app');
+  }
+
+  const urlHasEmail = () => {
+    if ('email' in router.query) {
+      setEmail(router.query.email);
+    }
   }
 
   return (
@@ -58,6 +68,7 @@ export function LoginForm() {
                 id="sign-in-email"
                 onChange={(e) => setEmail(e.target.value)}
                 className=" rounded-r-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent"
+                value={email}
                 placeholder="Your email" />
             </div>
           </div>

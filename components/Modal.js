@@ -3,16 +3,15 @@ import { Dialog, Transition } from '@headlessui/react'
 import { CheckCircleIcon } from '@heroicons/react/24/outline'
 
 export function Modal({handleModalClose, isOpen, message = 'You have successfully updated this request.', title = 'Success!'}) {
-  const [open, setOpen] = useState(isOpen);
+  // const [open, setOpen] = useState(isOpen);
   const okButtonRef = useRef(null)
 
   const handleClose = () => {
-    setOpen(false);
     handleModalClose();
   }
 
   return (
-    <Transition.Root show={open} as={Fragment}>
+    <Transition.Root show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" initialFocus={okButtonRef} onClose={handleClose}>
         <Transition.Child
           as={Fragment}
@@ -60,7 +59,7 @@ export function Modal({handleModalClose, isOpen, message = 'You have successfull
                     type="button"
                     className="inline-flex w-full justify-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
                     ref={okButtonRef}
-                    onClick={() => handleClose()}
+                    onClick={handleClose}
                   >
                     Ok
                   </button>
