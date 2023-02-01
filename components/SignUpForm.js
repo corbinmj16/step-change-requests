@@ -16,7 +16,11 @@ export function SignUpForm() {
 
     const {error} = await supabase.auth.signUp({
       email,
-      password
+      password,
+      options: {
+        /** The redirect url embedded in the email link */
+        emailRedirectTo: "https://www.stepchange.consulting/login",
+      },
     });
 
     if (error) {
