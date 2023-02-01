@@ -2,11 +2,11 @@ import {useRouter} from "next/router";
 import {supabase} from "../../utils/supabase";
 import {AppLayout, ContentLayout} from "../../layouts";
 import {getUser} from '../../utils/helpers';
+import {useAppModalStore} from "../../store/useAppModalStore";
 import {
   Requests,
   PageHeaderTitle,
   Modal,
-  Homepage,
 } from '../../components';
 
 export async function getServerSideProps({req, query}) {
@@ -34,13 +34,15 @@ export async function getServerSideProps({req, query}) {
     props: {
       requests: allRequests,
       user,
-      showSuccessModal: request_success === 'true' ? true : false,
+      showSuccessModal: request_success === 'true',
     }
   }
 }
 
 export default function Dashboard({ requests, user, showSuccessModal }) {
   const router = useRouter();
+  const setIsOpen = useAppModalStore(state => state.setIsOpen);
+  const isOpen = useAppModalStore(state => state.isOpen);
 
   const handleModalClose = () => {
     router.replace(`/app`, undefined, { shallow: true });
@@ -50,9 +52,11 @@ export default function Dashboard({ requests, user, showSuccessModal }) {
     <>
       <AppLayout user={user}>
         <Modal
-          isOpen={showSuccessModal}
-          handleModalClose={handleModalClose}
+          isOpen={isOpen}
           message="You've successfully created a request."
+          title= 'Success!'
+          buttonText= 'Ok'
+          modalType= 'success'
         />
 
         <PageHeaderTitle title='Dashboard' />

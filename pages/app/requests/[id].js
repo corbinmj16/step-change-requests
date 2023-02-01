@@ -7,6 +7,7 @@ import {AppLayout, ContentLayout} from "../../../layouts";
 import {formatDate, getUser} from "../../../utils/helpers";
 import {PageHeaderTitle, Modal, ContentCard} from "../../../components";
 import {useNewRequestStore} from "../../../store/useNewRequestStore";
+import {useAppModalStore} from "../../../store/useAppModalStore";
 
 export async function getServerSideProps({req, params, query}) {
   const user = await getUser(req);
@@ -49,15 +50,24 @@ export async function getServerSideProps({req, params, query}) {
 export default function RequestPage({ request, user, showUpdateModal }) {
   const router = useRouter();
   const pdfRef = useRef();
+  const modal = useAppModalStore();
   const pdfFileTitle = request.title.replace(' ', '_');
 
   const handleModalClose = () => {
+    modal.setIsOpen();
     router.replace(`/app/requests/${request.id}`, undefined, { shallow: true });
   }
 
   return (
     <AppLayout user={user}>
-      <Modal isOpen={showUpdateModal} handleModalClose={handleModalClose} />
+      <Modal
+        isOpen={showUpdateModal}
+        handleModalClose={handleModalClose}
+        title={`Success!`}
+        message={`You successfully updated this request.`}
+        buttonText={`Ok`}
+        modalType={`success`}
+      />
 
       <PageHeaderTitle title={request.title}>
         <ReactToPrint
