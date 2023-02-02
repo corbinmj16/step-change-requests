@@ -32,13 +32,16 @@ export default function Login() {
   return (
     <AppLayout>
       <div className="min-h-screen flex flex-col justify-center items-center">
+
         <Modal
           title={`Please Verify Account`}
           isOpen={showNewAccountModal}
           handleModalClose={handleAccountModalClose}
           message={`Check your email to verify your account.`}
         />
+
         <LoginForm />
+
       </div>
     </AppLayout>
   );

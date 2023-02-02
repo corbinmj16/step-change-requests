@@ -7,7 +7,6 @@ import {
   Requests,
   PageHeaderTitle,
   Modal,
-  Homepage,
 } from '../../components';
 
 export async function getServerSideProps({req}) {
