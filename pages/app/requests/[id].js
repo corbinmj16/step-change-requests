@@ -1,10 +1,10 @@
 import ReactToPrint from "react-to-print";
 import Link from "next/link";
-import {useRef, useEffect} from "react";
+import {useRef, useEffect, useState} from "react";
 import {useRouter} from "next/router";
 import { supabase } from "../../../utils/supabase";
 import {AppLayout, ContentLayout} from "../../../layouts";
-import {formatDate, getUser} from "../../../utils/helpers";
+import {formatDate, getUser, urlHasQuery} from "../../../utils/helpers";
 import {PageHeaderTitle, Modal, ContentCard} from "../../../components";
 import {useNewRequestStore} from "../../../store/useNewRequestStore";
 
@@ -18,8 +18,6 @@ export async function getServerSideProps({req, params, query}) {
   }
 
   const { id } = params;
-  const {show_updated} = query;
-
 
   // get requests from db
   const {data: request, error} = await supabase
@@ -28,36 +26,41 @@ export async function getServerSideProps({req, params, query}) {
     .eq('id', id)
     .single();
 
-    // show 404 if 
-    if (!request || error) {
-      return {
-        notFound: true,
-      }
+  // show 404 if
+  if (!request || error) {
+    return {
+      notFound: true,
     }
-
-  const showUpdateModal = show_updated === 'true' ? true : false;
+  }
 
   return {
     props: {
       request,
       user,
-      showUpdateModal,
     }
   }
 }
 
-export default function RequestPage({ request, user, showUpdateModal }) {
+export default function RequestPage({ request, user }) {
   const router = useRouter();
   const pdfRef = useRef();
   const pdfFileTitle = request.title.replace(' ', '_');
+  const [isUpdateModalShowing, setIsUpdateModalShowing] = useState(false);
+
+  useEffect(() => {
+    if (urlHasQuery('updated', router.query)) {
+      setIsUpdateModalShowing(true);
+    }
+  }, []);
 
   const handleModalClose = () => {
+    setIsUpdateModalShowing(false);
     router.replace(`/app/requests/${request.id}`, undefined, { shallow: true });
   }
 
   return (
     <AppLayout user={user}>
-      <Modal isOpen={showUpdateModal} handleModalClose={handleModalClose} />
+      <Modal isOpen={isUpdateModalShowing} handleModalClose={handleModalClose} />
 
       <PageHeaderTitle title={request.title}>
         <ReactToPrint

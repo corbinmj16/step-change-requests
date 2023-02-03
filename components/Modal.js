@@ -1,10 +1,34 @@
-import {Fragment, useEffect, useRef, useState} from 'react'
+import {Fragment, useRef} from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { CheckCircleIcon } from '@heroicons/react/24/outline'
+import { CheckCircleIcon, ExclamationCircleIcon,  } from '@heroicons/react/24/outline'
 
-export function Modal({handleModalClose, isOpen, message = 'You have successfully updated this request.', title = 'Success!'}) {
-  // const [open, setOpen] = useState(isOpen);
+export function Modal(
+  {
+    handleModalClose,
+    isOpen,
+    message = 'You have successfully updated this request.',
+    title = 'Success!',
+    buttonText = "Ok",
+    modalType = 'success',
+}) {
   const okButtonRef = useRef(null)
+  const modalTypeMap = {
+    'success': {
+      icon: <CheckCircleIcon className="h-6 w-6 text-green-600" aria-hidden="true" />,
+      bg_color: 'bg-green-100',
+      button_color: 'bg-green-600 hover:bg-green-700 focus:ring-green-500'
+    },
+    'warning': {
+      icon: <ExclamationCircleIcon className="h-6 w-6 text-yellow-600" aria-hidden="true" />,
+      bg_color: 'bg-yellow-100',
+      button_color: 'bg-yellow-600 hover:bg-yellow-700 focus:ring-yellow-500'
+    },
+    'danger': {
+      icon: <ExclamationCircleIcon className="h-6 w-6 text-red-600" aria-hidden="true" />,
+      bg_color: 'bg-red-100',
+      button_color: 'bg-red-600 hover:bg-red-700 focus:ring-red-500'
+    }
+  }
 
   const handleClose = () => {
     handleModalClose();
@@ -39,8 +63,8 @@ export function Modal({handleModalClose, isOpen, message = 'You have successfull
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                 <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                   <div className="sm:flex sm:items-start">
-                    <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
-                      <CheckCircleIcon className="h-6 w-6 text-green-600" aria-hidden="true" />
+                    <div className={`mx - auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full ${modalTypeMap[modalType].bg_color} sm:mx-0 sm:h-10 sm:w-10`}>
+                      {modalTypeMap[modalType].icon}
                     </div>
                     <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                       <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
@@ -57,11 +81,11 @@ export function Modal({handleModalClose, isOpen, message = 'You have successfull
                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                   <button
                     type="button"
-                    className="inline-flex w-full justify-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                    className={`inline flex w-full justify-center rounded-md border border-transparent ${modalTypeMap[modalType].button_color} px-4 py-2 text-base font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm`}
                     ref={okButtonRef}
                     onClick={handleClose}
                   >
-                    Ok
+                    {buttonText}
                   </button>
                 </div>
               </Dialog.Panel>

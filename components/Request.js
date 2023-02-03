@@ -9,6 +9,12 @@ export function Request({ request }) {
     estimated_hours,
   } = request;
 
+  const badgeColorMap = {
+    "Low": "bg-blue-100 text-blue-800",
+    "Medium": "bg-yellow-100 text-yellow-800",
+    "High": "bg-red-100 text-red-800",
+  };
+
   return (
     <div className="bg-white max-w-2xl shadow overflow-hidden rounded-lg mb-5">
       <div className="px-4 py-4 sm:px-6">
@@ -20,7 +26,9 @@ export function Request({ request }) {
           </Link>
         </h3>
         <p className="mt-1 max-w-2xl text-sm text-gray-500">
-          {priority}
+          <span className={`${badgeColorMap[priority]} text-xs font-medium mr-2 px-2.5 py-0.5 rounded`}>
+              {priority}
+            </span>
         </p>
       </div>
       <div className="border-t border-gray-200">

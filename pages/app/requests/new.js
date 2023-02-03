@@ -81,7 +81,7 @@ export default function New({user}) {
         <button
           onClick={submitNewRequest}
           type="submit"
-          className="bg-blue-500 rounded-lg text-white p-2 hover:bg-blue-400 font-bold">
+          className="sticky bottom-2 bg-blue-500 rounded-lg text-white p-2 hover:bg-blue-400 font-bold">
           Submit
         </button>
       </ContentLayout>

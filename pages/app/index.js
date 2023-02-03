@@ -2,7 +2,7 @@ import {useRouter} from "next/router";
 import {useEffect, useState} from "react";
 import {supabase} from "../../utils/supabase";
 import {AppLayout, ContentLayout} from "../../layouts";
-import {getUser} from '../../utils/helpers';
+import {getUser, urlHasQuery} from '../../utils/helpers';
 import {
   Requests,
   PageHeaderTitle,
@@ -39,29 +39,50 @@ export async function getServerSideProps({req}) {
 export default function Dashboard({ requests, user }) {
   const router = useRouter();
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   useEffect(() => {
-    urlHasSuccess();
+    checkModalToShow();
   }, [])
   const handleModalClose = () => {
     setShowSuccessModal(false);
+    setShowDeleteModal(false);
     router.replace(`/app`, undefined, { shallow: true });
   }
 
-  const urlHasSuccess = () => {
-    if ('request_success' in router.query) {
+  const checkModalToShow = () => {
+    if (urlHasQuery('request_success', router.query)) {
       setShowSuccessModal(true);
+    }
+
+    if (urlHasQuery('deleted', router.query)) {
+      setShowDeleteModal(true);
     }
   }
 
-  return (
-    <>
-      <AppLayout user={user}>
+  const AlertModals = () => {
+    return (
+      <>
         <Modal
           isOpen={showSuccessModal}
           handleModalClose={handleModalClose}
           message="You've successfully created a request."
         />
+
+        <Modal
+          isOpen={showDeleteModal}
+          handleModalClose={handleModalClose}
+          title="Request Deleted"
+          message="You've successfully deleted a request."
+        />
+      </>
+    )
+  }
+
+  return (
+    <>
+      <AppLayout user={user}>
+        <AlertModals />
 
         <PageHeaderTitle title='Dashboard' />
 

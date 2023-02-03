@@ -1,5 +1,5 @@
 import {useRouter} from "next/router";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {supabase} from "../../../../utils/supabase";
 import {getUser} from "../../../../utils/helpers";
 import {AppLayout, ContentLayout} from "../../../../layouts";
@@ -7,7 +7,7 @@ import {
   FormGeneralInfo,
   FormMaterials,
   FormRequestScope,
-  FormRequestSummary,
+  FormRequestSummary, Modal,
   PageHeaderTitle,
 } from "../../../../components";
 import {useNewRequestStore} from "../../../../store/useNewRequestStore";
@@ -47,6 +47,7 @@ export async function getServerSideProps({req, params}) {
 export default function EditPage({request, user}) {
   const router = useRouter();
   const newRequestStore = useNewRequestStore();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   useEffect(() => {
     newRequestStore.setAllRequestFields(request);
@@ -81,16 +82,48 @@ export default function EditPage({request, user}) {
 
     newRequestStore.resetNewRequestState();
 
-    router.push(`/app/requests/${request.id}?show_updated=true`);
+    router.push(`/app/requests/${request.id}?updated=true`);
+  }
+
+  const handleDelete = async () => {
+    try {
+      const {error} = await supabase.from('requests').delete().eq('id', request.id);
+      if (error) throw error;
+    } catch (e) {
+      console.error('Error Deleting: ', e.message);
+    } finally {
+      setIsDeleteModalOpen(false);
+      router.push('/app?deleted=true');
+    }
   }
 
   return (
     <AppLayout user={user}>
-      <PageHeaderTitle title={`${request.title}`}>
-        <p className="italics">Editing</p>
-      </PageHeaderTitle>
+      <PageHeaderTitle title={`${request.title}`} />
+
+      <div className="bg-yellow-200 -mt-5">
+        <div className={`container mx-auto max-w-6xl py-2 px-4 lg:px-8`}>
+          <p className="italics">You are in edit mode</p>
+        </div>
+      </div>
 
       <ContentLayout>
+        <button
+          onClick={() => setIsDeleteModalOpen(true)}
+          className="inline bg-red-500 rounded-lg text-white p-2 hover:bg-red-400 font-bold mb-5"
+        >
+          Delete this request
+        </button>
+
+        <Modal
+          isOpen={isDeleteModalOpen}
+          handleModalClose={handleDelete}
+          title="Warning!"
+          message="You are going to delete this request. Are you sure?"
+          buttonText="Delete"
+          modalType="danger"
+        />
+
         <FormGeneralInfo />
 
         <FormRequestSummary />
@@ -102,7 +135,7 @@ export default function EditPage({request, user}) {
         <button
           onClick={submitNewRequest}
           type="submit"
-          className="bg-blue-500 rounded-lg text-white p-2 hover:bg-blue-400 font-bold">
+          className="sticky bottom-2 bg-blue-500 rounded-lg text-white p-2 hover:bg-blue-400 font-bold">
           Submit
         </button>
       </ContentLayout>
