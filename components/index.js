@@ -4,6 +4,7 @@ export { Editor } from './Editor';
 export { Requests } from './Requests';
 export { Request } from './Request';
 export { Menu } from './Menu';
+export { NewMenu } from './NewMenu';
 export { FormRequestorInfo } from './FormRequestorInfo';
 export { FormGeneralInfo } from './FormGeneralInfo';
 export { FormRequestSummary } from './FormRequestSummary';
