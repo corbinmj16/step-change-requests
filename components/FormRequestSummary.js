@@ -1,6 +1,5 @@
 import {Editor} from "./Editor";
 import {useNewRequestStore} from "../store/useNewRequestStore";
-import {useState} from "react";
 import {ContentCard} from "./ContentCard";
 
 export function FormRequestSummary() {
@@ -15,6 +14,7 @@ export function FormRequestSummary() {
         id="summary"
         name="summary"
         value={summary ?? ''}
+        theme="snow"
         className="flex flex-col prose max-w-none"
         onChange={(content) => handleUpdateNewRequestInfo({summary: content})}
         placeholder="The summary of this request is..."

@@ -1,6 +1,4 @@
-import {useState, useRef} from "react";
-import Image from "next/image";
-import {supabase} from "../utils/supabase";
+import {useState} from "react";
 import {useNewRequestStore} from "../store/useNewRequestStore";
 import {ContentCard, Editor} from "../components";
 

@@ -1,10 +1,7 @@
-import { useState } from 'react';
 import dynamic from "next/dynamic";
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
-import 'react-quill/dist/quill.snow.css';
 
 export function Editor(props) {
-  const [value, setValue] = useState('');
   const modules = {
       toolbar: [
         [{ 'header': [1, 2, false] }],
