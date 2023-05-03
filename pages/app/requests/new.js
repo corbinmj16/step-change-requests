@@ -35,7 +35,7 @@ export default function New({user}) {
     resetNewRequestState();
   }, []);
 
-  const submitNewRequest = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const {data, error} = await supabase
@@ -79,7 +79,7 @@ export default function New({user}) {
         <FormRequestScope />
 
         <button
-          onClick={submitNewRequest}
+          onClick={handleSubmit}
           type="submit"
           className="sticky bottom-2 bg-blue-500 rounded-lg text-white p-2 hover:bg-blue-400 font-bold">
           Submit

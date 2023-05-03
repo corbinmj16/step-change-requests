@@ -26,6 +26,7 @@ export default function Login() {
 
   const handleAccountModalClose = () => {
     setShowNewAccountModal(false);
+    // remove query without reload
     router.replace(`/login`, undefined, { shallow: true });
   }
 
