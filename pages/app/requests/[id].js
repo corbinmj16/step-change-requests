@@ -1,12 +1,11 @@
 import ReactToPrint from "react-to-print";
 import Link from "next/link";
-import {useRef, useEffect, useState} from "react";
-import {useRouter} from "next/router";
+import { useRef, useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { supabase } from "../../../utils/supabase";
-import {AppLayout, ContentLayout} from "../../../layouts";
-import {formatDate, getUser, urlHasQuery} from "../../../utils/helpers";
-import {PageHeaderTitle, Modal, ContentCard} from "../../../components";
-import {useNewRequestStore} from "../../../store/useNewRequestStore";
+import { AppLayout } from "../../../layouts";
+import { formatDate, getUser, urlHasQuery } from "../../../utils/helpers";
+import { PageHeaderTitle, Modal, ContentCard } from "../../../components";
 
 export async function getServerSideProps({req, params, query}) {
   const user = await getUser(req);
